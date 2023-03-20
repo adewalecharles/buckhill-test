@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: buckhill
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: buckhill_app_sem_dev
+    container_name: buckhill_app_sem_dev
+#    env_file: docker-compose/app/.env.example
+    restart: always
+    working_dir: /var/www/
+    volumes:
+      - ./config.yml:/etc/docker/registry/config.yml
+      - ./:/var/www
+    networks:
+      - buckhill_app_sem
+
+  nginx:
+    image: nginx:alpine
+    container_name: buckhill_app_sem_nginx
+    restart: always
+    ports:
+      - 8401:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - buckhill_app_sem
+
+networks:
+  buckhill_app_sem:
+    driver: bridge

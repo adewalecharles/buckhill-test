@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Helpers\Clock;
 use App\Models\JwtToken;
 use App\Models\User;
 use DateTimeImmutable;
@@ -84,7 +85,7 @@ trait HasJwtToken
         $now   = new DateTimeImmutable();
 
         $builder = $config->builder(new UnixTimestampDates())
-            ->issuedBy(config('app.url'))
+            ->issuedBy(request()->getHttpHost())
             // Configures the id (jti claim)
             ->identifiedBy((string)$this->uuid)
             // Configures the time that the token was issue (iat claim)
@@ -132,7 +133,7 @@ trait HasJwtToken
         }
 
         // check if the token was issued by you
-        if (!$validator->validate($token, new IssuedBy(config('app.url')))) {
+        if (!$validator->validate($token, new IssuedBy(request()->getHttpHost()))) {
             return false;
         }
 
@@ -147,25 +148,31 @@ trait HasJwtToken
         }
 
         // check if the token has not expired
-        // if (!$validator->validate($token, new StrictValidAt())) {
-        //     return false;
-        // }
+        if ($token->claims()->get('exp') < now()) {
+            return false;
+        }
 
         return true;
 
     }
 
-    public function getTokenExpiration($token)
+    /**
+     * Parse a JWT token
+     *
+     * @param string $token
+     */
+    public function parseToken(string $token):Plain
     {
-        $token = (new Parser(new JoseEncoder()))->parse($token);
+        $parser = new Parser(new JoseEncoder());
 
-        $expiration = $token->getClaim('exp');
+        $token = $parser->parse($token);
 
-        return date('Y-m-d H:i:s', $expiration);
+        return $token;
     }
 
     public function jwtToken(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(JwtToken::class);
     }
+
 }

@@ -51,7 +51,10 @@ class AuthService
 
         $user = $this->userRepository->createUser($valid);
 
-        if (Auth::attempt($valid)) {
+        // log user in
+        Auth::login($user);
+
+        if (Auth::check()) {
 
             // create jwt token
             $jwt = $this->generateAuthToken($user);
@@ -93,7 +96,10 @@ class AuthService
             throw new \Exception("Invalid Credentials");
         }
 
-        if (Auth::attempt($valid)) {
+        // log user in
+        Auth::loginUsingId($user->id);
+
+        if (Auth::check()) {
 
             // create jwt token
             $jwt = $this->generateAuthToken($user);
@@ -123,7 +129,6 @@ class AuthService
     {
         $this->authRepository->deleteAuthToken(auth()->user());
         Auth::logout();
-
         return true;
     }
 
