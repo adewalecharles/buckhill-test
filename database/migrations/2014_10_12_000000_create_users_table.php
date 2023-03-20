@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->text('address');
             $table->string('phone_number');
-            $table->boolean('is_marketing');
+            $table->boolean('is_marketing')->default(false);
             $table->timestamp('last_login_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

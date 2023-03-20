@@ -4,12 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Traits\HasJwtToken;
 use App\Traits\HasRouteKey;
 use App\Traits\HasUuid;
+use Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 /**
  * App\Models\User
@@ -45,7 +46,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuid, HasRouteKey;
+    use HasJwtToken, HasFactory, Notifiable, HasUuid, HasRouteKey;
 
     /**
      * The attributes that are mass assignable.
@@ -87,8 +88,9 @@ class User extends Authenticatable
         'last_login_at' => 'datetime'
     ];
 
-    public function jwtToken(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function setPasswordAttribute($value): string
     {
-        return $this->hasOne(JwtToken::class);
+        return $this->attributes['password'] = Hash::make($value);
     }
+
 }

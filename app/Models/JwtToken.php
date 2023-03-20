@@ -4,8 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Lcobucci\JWT\Token;
+use DateTimeImmutable;
+use DateTimeInterface;
+use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\JwtFacade;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key\InMemory;
 
 /**
  * App\Models\JwtToken
@@ -20,6 +24,10 @@ class JwtToken extends Model
 {
     use HasFactory;
 
+    private $claims = [];
+
+    private $expiresAt;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -31,7 +39,6 @@ class JwtToken extends Model
         'unique_id',
         'permissions',
         'restrictions',
-        'title',
         'last_used_at',
         'expires_at',
         'refreshed_at'
@@ -42,25 +49,4 @@ class JwtToken extends Model
         return $this->belongsTo(User::class);
     }
 
-
-    public function hasPermission(string $permission): bool
-    {
-        $token = $this->getToken();
-
-        return in_array($permission, $token->getClaim('permissions', []));
-    }
-
-    public function hasRestriction(string $restriction): bool
-    {
-        $token = $this->getToken();
-
-        return in_array($restriction, $token->getClaim('restrictions', []));
-    }
-
-    public function getToken(): Token
-    {
-        $jwt = Auth::parseToken();
-
-        return $jwt->getPayload();
-    }
 }

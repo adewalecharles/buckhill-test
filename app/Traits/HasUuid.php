@@ -11,7 +11,7 @@ trait HasUuid
     protected static function booted()
     {
         static::creating(function ($model) {
-            $model->uuid = \Illuminate\Support\Str::uuid();
+            $model->uuid = (string) \Illuminate\Support\Str::uuid();
         });
     }
 }
