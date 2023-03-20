@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Repositories\AuthRepository;
 use App\Repositories\UserRepository;
 use Carbon\CarbonImmutable;
+use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Lcobucci\JWT\Token\Plain;
@@ -85,6 +86,11 @@ class AuthService
 
         if (!$user) {
            throw new \Exception('User does not exists');
+        }
+
+        //check password
+        if (!$user || !Hash::check($valid['password'], $user->password)) {
+            throw new \Exception("Invalid Credentials");
         }
 
         if (Auth::attempt($valid)) {

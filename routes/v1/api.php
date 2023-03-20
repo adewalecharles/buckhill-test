@@ -19,6 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'admin'], function() {
     Route::post('create', [AuthController::class, 'create']);
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('logout', [AuthController::class, 'logout']);
 });
 
