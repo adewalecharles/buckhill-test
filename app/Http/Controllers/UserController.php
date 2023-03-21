@@ -61,8 +61,8 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
             $response = $this->userService->updateUser($request->validated(), $user);
-            return $this->success('User updated', $response);
             DB::commit();
+            return $this->success('User updated', $response);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
             DB::rollBack();

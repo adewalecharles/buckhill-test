@@ -5,22 +5,7 @@ use App\Models\User;
 
 class UserRepository
 {
-    /**
-     * @var User
-     */
-    protected $user;
-
-    /**
-     * Auth Repository constructor
-     *
-     * @param User $user
-     */
-
-    public function __constructor(User $user)
-    {
-        $this->user = $user;
-    }
-
+   
     /**
      * get a single user using user uuid
      *
@@ -48,9 +33,9 @@ class UserRepository
     /**
      * Get all users
      *
-     * @return
+     * @return mixed
      */
-    public function getAllUsers()
+    public function getAllUsers():mixed
     {
         return User::searchAndSort(
             request('q'), // search query

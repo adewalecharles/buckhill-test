@@ -26,6 +26,6 @@ class CategoryService
 
     public function getAllCategories(): \Illuminate\Http\Resources\Json\JsonResource
     {
-        return new CategoryResource($this->categoryRepository->getAllCategories());
+        return CategoryResource::collection($this->categoryRepository->getAllCategories());
     }
 }
