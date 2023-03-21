@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UpdateRequest;
+use App\Models\User;
 use App\Services\UserService;
+use DB;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -47,16 +50,31 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, User $user)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $response = $this->userService->updateUser($request->validated(), $user);
+            return $this->success('User updated', $response);
+            DB::commit();
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+            DB::rollBack();
+        }
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $uuid)
     {
-        //
+        try {
+
+            return $this->userService->deleteUser($uuid) ? $this->success('User Deleted', []) :
+                 $this->error('Could not delete User');
+        } catch (\Exception $e) {
+            return $this->error('An error occurred');
+        }
     }
 }

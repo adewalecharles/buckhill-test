@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +21,12 @@ Route::group(['prefix' => 'admin'], function() {
     Route::post('create', [AuthController::class, 'create']);
     Route::post('login', [AuthController::class, 'login']);
 
-    Route::group(['middleware' => 'authenticated'], function() {
+    Route::group(['middleware' => ['authenticated', 'isAdmin']], function() {
         Route::get('logout', [AuthController::class, 'logout']);
+
+        Route::get('user-listing', [UserController::class, 'index']);
+        Route::put('user-edit/{uuid}',[UserController::class, 'edit']);
+        Route::delete('user-delete/{uuid}',[UserController::class, 'delete']);
     });
 
 });

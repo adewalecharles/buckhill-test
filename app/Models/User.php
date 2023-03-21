@@ -93,4 +93,53 @@ class User extends Authenticatable
         return $this->attributes['password'] = Hash::make($value);
     }
 
+    public function scopeSortBy($query, $sortBy, $desc)
+    {
+        $sortFields = [
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'phone_number',
+            'address',
+            'created_at',
+        ];
+
+        if (!in_array($sortBy, $sortFields)) {
+            $sortBy = 'created_at';
+        }
+
+        return $query->orderBy($sortBy, $desc ? 'desc' : 'asc');
+    }
+
+    public function scopeLimitBy($query, $limit)
+    {
+        $limit = $limit ?: 50;
+        return $query->limit($limit);
+    }
+
+    public function scopeSearch($query, $searchQuery)
+    {
+        if (!$searchQuery) {
+            return $query;
+        }
+
+        return $query->where(function ($query) use ($searchQuery) {
+            $query->where('first_name', 'like', "%$searchQuery%")
+            ->orWhere('last_name', 'like', "%$searchQuery%")
+            ->orWhere('email', 'like', "%$searchQuery%")
+            ->orWhere('phone_number', 'like', "%$searchQuery%")
+            ->orWhere('address', 'like', "%$searchQuery%");
+        });
+    }
+
+    public static function searchAndSort($searchQuery, $sortBy, $desc, $limit, $perPage)
+    {
+        return static::search($searchQuery)
+            ->where('is_admin', false)
+            ->sortBy($sortBy, $desc)
+            ->limitBy($limit)
+            ->paginate($perPage);
+    }
+
 }
