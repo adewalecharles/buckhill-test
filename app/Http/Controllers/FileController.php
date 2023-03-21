@@ -16,15 +16,21 @@ class FileController extends Controller
 
     public function __construct(FileService $fileService)
     {
-        $this->$fileService = $fileService;
+        $this->fileService = $fileService;
     }
 
-
-    public function store(UploadFileRequest $request)
+    /**
+     * upload and create a file
+     *
+     * @param UploadFileRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(UploadFileRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             DB::beginTransaction();
-            $response = $this->success('File uploaded', $this->fileService->uploadFile($request->validated()));
+            $response =  $this->fileService->uploadFile($request->validated());
             DB::commit();
             return $this->success('File Uploaded', $response);
         } catch (\Exception $e) {
