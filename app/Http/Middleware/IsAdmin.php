@@ -2,12 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
+use App\Traits\HasJwtToken;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class IsAdmin
 {
+    use HasJwtToken;
     /**
      * Handle an incoming request.
      *
@@ -15,6 +18,24 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        //get the bearer token
+        $token = $request->bearerToken();
+
+        // parse the token
+        $parsedToken = $this->parseToken($token);
+
+        // get the user
+        $user = User::where('uuid', $parsedToken->claims()->get('user_uuid'))->first();
+
+        //check if user is admin
+        if($user->is_admin) {
+            return $next($request);
+        }
+
+        // return error if user is not admin
+        return response()->json([
+            'status' => false,
+            'message' => 'You are not permitted to access to use this resource'
+        ],400);
     }
 }
