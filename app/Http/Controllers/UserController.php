@@ -21,8 +21,10 @@ class UserController extends Controller
     }
     /**
      * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index():\Illuminate\Http\JsonResponse
     {
         try {
             return $this->success('All users fetched', $this->userService->getAllUsers());
@@ -33,6 +35,8 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     *
      */
     public function store(Request $request)
     {
@@ -49,8 +53,10 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, User $user)
+    public function update(UpdateRequest $request, User $user): \Illuminate\Http\JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -66,8 +72,10 @@ class UserController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(string $uuid)
+    public function destroy(string $uuid): \Illuminate\Http\JsonResponse
     {
         try {
 
