@@ -23,6 +23,24 @@ class UserController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Get(
+     * path="/admin/user-listing",
+     * summary="Get users",
+     * description="Get all non admin users",
+     * operationId="usersListing",
+     * tags={"admin"},
+     * security={ {"bearer": {} }},
+     * @OA\Response(
+     *    response=200,
+     *    description="Success",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="boolean", example="true"),
+     *       @OA\Property(property="message", type="string", example="All users fetched"),
+     *       @OA\Property(property="data", type="object"),
+     *    )
+     *   ),
+     * )
      */
     public function index():\Illuminate\Http\JsonResponse
     {
@@ -55,6 +73,32 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Put(
+     * path="/admin/user-edit/{uuid}",
+     * summary="Update user record",
+     * description="Update user record",
+     * operationId="userUpdate",
+     * tags={"admin"},
+     * security={ {"bearer": {} }},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Input User Details",
+     *    @OA\JsonContent(
+     *       required={"first_name","last_name","email", "address", "phone_number"},
+     *       @OA\Property(property="first_name", type="string", example="adewale"),
+     *       @OA\Property(property="last_name", type="string", example="charles"),
+     *       @OA\Property(property="address", type="string", example="no 3, york lane"),
+     *       @OA\Property(property="phone_number", type="string", example="2348253796851"),
+     *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *      @OA\Property(property="is_marketing", type="boolean", example="true"),
+     *    ),
+     * ),
+     *   @OA\Response(
+     *    response=200,
+     *    description="Success"
+     *     ),
+     * )
      */
     public function update(UpdateRequest $request, User $user): \Illuminate\Http\JsonResponse
     {
@@ -74,6 +118,19 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Delete(
+     * path="/admin/user-delete/{uuid}",
+     * summary="Delete user",
+     * description="Delete user record ",
+     * operationId="userDelete",
+     * tags={"admin"},
+     * security={ {"bearer": {} }},
+     * @OA\Response(
+     *    response=200,
+     *    description="User Deleted"
+     *     ),
+     * )
      */
     public function destroy(string $uuid): \Illuminate\Http\JsonResponse
     {

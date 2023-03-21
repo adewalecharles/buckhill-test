@@ -1,0 +1,300 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Pet API",
+        "description": "Example info",
+        "contact": {
+            "name": "Swagger API Team"
+        },
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://buckhill-test.test/api/v1",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/admin/create": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Create admin account",
+                "description": "Create an account",
+                "operationId": "authCreate",
+                "requestBody": {
+                    "description": "Input User Details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "address",
+                                    "phone_number"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "adewale"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "charles"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "no 3, york lane"
+                                    },
+                                    "phone_number": {
+                                        "type": "string",
+                                        "example": "2348253796851"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/admin/login": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "login admin account",
+                "description": "login an account",
+                "operationId": "authLogin",
+                "requestBody": {
+                    "description": "Input User Details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/admin/logout": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Logout",
+                "description": "Logout user and invalidate token",
+                "operationId": "authLogout",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Returns when user is not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not authorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/admin/user-listing": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Get users",
+                "description": "Get all non admin users",
+                "operationId": "usersListing",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "All users fetched"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/admin/user-edit/{uuid}": {
+            "put": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Update user record",
+                "description": "Update user record",
+                "operationId": "userUpdate",
+                "requestBody": {
+                    "description": "Input User Details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "email",
+                                    "address",
+                                    "phone_number"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "adewale"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "charles"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "no 3, york lane"
+                                    },
+                                    "phone_number": {
+                                        "type": "string",
+                                        "example": "2348253796851"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "is_marketing": {
+                                        "type": "boolean",
+                                        "example": "true"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/admin/user-delete/{uuid}": {
+            "delete": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Delete user",
+                "description": "Delete user record ",
+                "operationId": "userDelete",
+                "responses": {
+                    "200": {
+                        "description": "User Deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "api_key_security_example": {
+                "type": "apiKey",
+                "description": "A short description for security scheme",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}

@@ -30,6 +30,32 @@ class AuthController extends Controller
      *
      * @param RegisterRequest $request
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Post(
+     * path="/admin/create",
+     * summary="Create admin account",
+     * description="Create an account",
+     * operationId="authCreate",
+     * tags={"admin"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Input User Details",
+     *    @OA\JsonContent(
+     *       required={"first_name","last_name","email","password","password_confirmation", "address", "phone_number"},
+     *       @OA\Property(property="first_name", type="string", example="adewale"),
+     *       @OA\Property(property="last_name", type="string", example="charles"),
+     *       @OA\Property(property="address", type="string", example="no 3, york lane"),
+     *       @OA\Property(property="phone_number", type="string", example="2348253796851"),
+     *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *       @OA\Property(property="password_confirmation", type="string", format="password", example="PassWord12345"),
+     *    ),
+     * ),
+     *   @OA\Response(
+     *    response=200,
+     *    description="Success"
+     *     ),
+     * )
      */
     public function create(RegisterRequest $request): \Illuminate\Http\JsonResponse
     {
@@ -50,6 +76,27 @@ class AuthController extends Controller
      *
      * @param LoginRequest $request
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Post(
+     * path="/admin/login",
+     * summary="login admin account",
+     * description="login an account",
+     * operationId="authLogin",
+     * tags={"admin"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Input User Details",
+     *    @OA\JsonContent(
+     *       required={"email","password"},
+     *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *    ),
+     * ),
+     *   @OA\Response(
+     *    response=200,
+     *    description="Success"
+     *     ),
+     * )
      */
     public function login(LoginRequest $request):\Illuminate\Http\JsonResponse
     {
@@ -65,6 +112,26 @@ class AuthController extends Controller
      * Method to logout users
      *
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Get(
+     * path="/admin/logout",
+     * summary="Logout",
+     * description="Logout user and invalidate token",
+     * operationId="authLogout",
+     * tags={"admin"},
+     * security={ {"bearer": {} }},
+     * @OA\Response(
+     *    response=200,
+     *    description="Success"
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Returns when user is not authenticated",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Not authorized"),
+     *    )
+     * )
+     * )
      */
     public function logout(): \Illuminate\Http\JsonResponse
     {

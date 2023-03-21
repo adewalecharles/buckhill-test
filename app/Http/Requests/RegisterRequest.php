@@ -31,7 +31,6 @@ class RegisterRequest extends FormRequest
             'avatar' =>  'sometimes|nullable|string|exists:files,uuid',
             'address' =>'required|string',
             'phone_number' => 'required|string',
-            'is_marketing' => 'required|boolean'
         ];
     }
 }
