@@ -24,13 +24,25 @@ class UserRepository
     /**
      * get a single user using user uuid
      *
-     * @param Uuid $uuid
+     * @param string $uuid
      *
      * @return User
      */
     public function getUser(string $uuid): User
     {
         return User::where('uuid', $uuid)->first();
+    }
+
+    /**
+     * get a single user using user email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function getUserByEmail(string $email):User
+    {
+        return User::where('email', $email)->first();
     }
 
     /**

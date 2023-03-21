@@ -85,7 +85,7 @@ class AuthService
      */
     public function loginUser(array $valid)
     {
-        $user = User::where('email', $valid['email'])->first();
+        $user = $this->userRepository->getUserByEmail($valid['email']);
 
         if (!$user) {
            throw new \Exception('User does not exists');
@@ -106,6 +106,9 @@ class AuthService
 
             // store token in the db
             $token = $this->authRepository->createAuthToken($user, $jwt);
+
+            $user->last_login_at = now();
+            $user->save();
 
             return [
                 'token' => $jwt->toString(),
