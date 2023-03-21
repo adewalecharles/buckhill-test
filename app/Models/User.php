@@ -115,7 +115,7 @@ class User extends Authenticatable
     public function scopeLimitBy($query, $limit)
     {
         $limit = $limit ?: 50;
-        return $query->limit($limit);
+        return $query->limit(intval($limit));
     }
 
     public function scopeSearch($query, $searchQuery)

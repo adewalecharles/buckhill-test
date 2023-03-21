@@ -2,16 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\BrandService;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
     /**
+     * @var BrandService
+     */
+    protected $brandService;
+
+    public function __construct(BrandService $brandService)
+    {
+        $this->brandService = $brandService;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        try {
+           return $this->success('All brands',$this->brandService->getAllBrands());
+        } catch (\Exception $e) {
+           return $this->error($e->getMessage());
+        }
     }
 
     /**

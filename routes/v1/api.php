@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,5 +31,11 @@ Route::group(['prefix' => 'admin'], function() {
         Route::delete('user-delete/{uuid}',[UserController::class, 'delete']);
     });
 
+});
+
+Route::group(['middleware' => ['authenticated']], function() {
+    Route::apiResource('brands', BrandController::class);
+    Route::apiResource('categories', CategoryController::class);
+    
 });
 

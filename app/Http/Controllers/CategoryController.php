@@ -2,16 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var CategoryService
      */
-    public function index()
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
     {
-        //
+        $this->categoryService = $categoryService;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(): \Illuminate\Http\JsonResponse
+    {
+        try {
+            return $this->success('All Categories', $this->categoryService->getAllCategories());
+        } catch (\Exception $e) {
+           return $this->error($e->getMessage());
+        }
     }
 
     /**
