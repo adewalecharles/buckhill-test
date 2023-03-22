@@ -25,6 +25,32 @@ class FileController extends Controller
      * @param UploadFileRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\POST(
+     * path="/file",
+     * summary="Create File",
+     * description="Create file",
+     * operationId="fileCreate",
+     * tags={"File"},
+     * security={ {"bearer": {} }},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Input Details",
+     *    @OA\JsonContent(
+     *       required={"file"},
+     *       @OA\Property(property="file", type="file"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Success",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="boolean", example="true"),
+     *       @OA\Property(property="message", type="string", example="File Uploaded"),
+     *       @OA\Property(property="data", type="object"),
+     *    )
+     *   ),
+     * )
      */
     public function store(UploadFileRequest $request): \Illuminate\Http\JsonResponse
     {
@@ -44,6 +70,26 @@ class FileController extends Controller
      * @param string $uuid
      *
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Get(
+     * path="/file/{uuid}",
+     * summary="Get file",
+     * description="Get a single file",
+     * operationId="fileList",
+     * @OA\Parameter(name="uuid", in="path", description="uuid of file", required=true,
+     *        @OA\Schema(type="string")
+     *    ),
+     * tags={"File"},
+     * @OA\Response(
+     *    response=200,
+     *    description="Success",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="boolean", example="true"),
+     *       @OA\Property(property="message", type="string", example="All file fetched"),
+     *       @OA\Property(property="data", type="object"),
+     *    )
+     *   ),
+     * )
      */
     public function show(string $uuid): \Illuminate\Http\JsonResponse
     {

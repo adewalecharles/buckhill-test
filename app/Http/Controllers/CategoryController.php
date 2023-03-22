@@ -21,6 +21,23 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Get(
+     * path="/categories",
+     * summary="Get Categories",
+     * description="Get all categories",
+     * operationId="categoriesListing",
+     * tags={"Category"},
+     * @OA\Response(
+     *    response=200,
+     *    description="Success",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="boolean", example="true"),
+     *       @OA\Property(property="message", type="string", example="All Category fetched"),
+     *       @OA\Property(property="data", type="object"),
+     *    )
+     *   ),
+     * )
      */
     public function index(): \Illuminate\Http\JsonResponse
     {

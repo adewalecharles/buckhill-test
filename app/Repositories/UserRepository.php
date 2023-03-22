@@ -62,15 +62,22 @@ class UserRepository
      * Update a user record
      *
      * @param array $valid
-     * @param User $user
+     * @param string $uuid
      *
      * @return User
      */
-    public function updateUser(array $valid, User $user): ?User
+    public function updateUser(array $valid, string $uuid): ?User
     {
-         $user->update($valid);
+        $user = User::where('uuid', $uuid)->first();
 
-         return $user;
+        if ($user) {
+            $user->update($valid);
+
+            return $user;
+        }
+
+        return false;
+
     }
 
     /**

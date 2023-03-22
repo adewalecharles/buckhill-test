@@ -33,13 +33,20 @@ class UserService
      * Update User
      *
      * @param array $valid
-     * @param User $user
+     * @param string $uuid
      *
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function updateUser(array $valid, User $user): \Illuminate\Http\Resources\Json\JsonResource
+    public function updateUser(array $valid, string $uuid): \Illuminate\Http\Resources\Json\JsonResource
     {
-        return new UserResource($this->userRepository->updateUser($valid, $user));
+        $user = $this->userRepository->updateUser($valid, $uuid);
+
+        if ($user) {
+            return new UserResource($user);
+        }
+
+        throw new \Exception('User not Found');
+
     }
 
     /**

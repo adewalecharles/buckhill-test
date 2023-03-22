@@ -31,6 +31,21 @@ class UserController extends Controller
      * operationId="usersListing",
      * tags={"admin"},
      * security={ {"bearer": {} }},
+     *  @OA\Parameter(name="limit", in="query", description="limit", required=false,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *    @OA\Parameter(name="page", in="query", description="the page number", required=false,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *    @OA\Parameter(name="desc", in="query", description="true or false", required=false,
+     *        @OA\Schema(type="string")
+     *    ),
+     *      @OA\Parameter(name="q", in="query", description="search parameter", required=false,
+     *        @OA\Schema(type="string")
+     *    ),
+     *    @OA\Parameter(name="sortBy", in="query", description="column to sort with, e.g id, first_name, last_name, created_at", required=false,
+     *        @OA\Schema(type="string")
+     *    ),
      * @OA\Response(
      *    response=200,
      *    description="Success",
@@ -81,6 +96,9 @@ class UserController extends Controller
      * operationId="userUpdate",
      * tags={"admin"},
      * security={ {"bearer": {} }},
+     * @OA\Parameter(name="uuid", in="path", description="uuid of user", required=true,
+     *        @OA\Schema(type="string")
+     *    ),
      * @OA\RequestBody(
      *    required=true,
      *    description="Input User Details",
@@ -100,11 +118,11 @@ class UserController extends Controller
      *     ),
      * )
      */
-    public function update(UpdateRequest $request, User $user): \Illuminate\Http\JsonResponse
+    public function update(UpdateRequest $request, $uuid): \Illuminate\Http\JsonResponse
     {
         try {
             DB::beginTransaction();
-            $response = $this->userService->updateUser($request->validated(), $user);
+            $response = $this->userService->updateUser($request->validated(), $uuid);
             DB::commit();
             return $this->success('User updated', $response);
         } catch (\Exception $e) {
@@ -126,6 +144,9 @@ class UserController extends Controller
      * operationId="userDelete",
      * tags={"admin"},
      * security={ {"bearer": {} }},
+     * @OA\Parameter(name="uuid", in="path", description="uuid of product", required=true,
+     *        @OA\Schema(type="string")
+     *    ),
      * @OA\Response(
      *    response=200,
      *    description="User Deleted"

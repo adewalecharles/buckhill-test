@@ -19,6 +19,23 @@ class BrandController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
+     * @OA\Get(
+     * path="/brands",
+     * summary="Get brands",
+     * description="Get all brands",
+     * operationId="brandsListing",
+     * tags={"Brand"},
+     * @OA\Response(
+     *    response=200,
+     *    description="Success",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="boolean", example="true"),
+     *       @OA\Property(property="message", type="string", example="All Brand fetched"),
+     *       @OA\Property(property="data", type="object"),
+     *    )
+     *   ),
+     * )
      */
     public function index()
     {
