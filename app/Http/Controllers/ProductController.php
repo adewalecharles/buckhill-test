@@ -82,7 +82,7 @@ class ProductController extends Controller
      * description="Create Product",
      * operationId="productCreate",
      * tags={"Product"},
-     * security={ {"bearer": {} }},
+     * security={ {"bearerAuth": {} }},
      * @OA\RequestBody(
      *    required=true,
      *    description="Input Details",
@@ -161,7 +161,7 @@ class ProductController extends Controller
      * description="Update Product",
      * operationId="productUpdate",
      * tags={"Product"},
-     * security={ {"bearer": {} }},
+     * security={ {"bearerAuth": {} }},
      * @OA\Parameter(name="uuid", in="path", description="uuid of product", required=true,
      *        @OA\Schema(type="string")
      *    ),
@@ -209,6 +209,7 @@ class ProductController extends Controller
      * description="Delete a single product",
      * operationId="deleteProduct",
      * tags={"Product"},
+     * security={ {"bearerAuth": {} }},
      *  @OA\Parameter(name="uuid", in="path", description="uuid of product", required=true,
      *        @OA\Schema(type="string")
      *    ),

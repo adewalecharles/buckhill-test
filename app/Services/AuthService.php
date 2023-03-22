@@ -91,6 +91,10 @@ class AuthService
            throw new \Exception('User does not exists');
         }
 
+        if (!$user->is_admin) {
+            throw new \Exception('User is not an admin account');
+        }
+
         //check password
         if (!$user || !Hash::check($valid['password'], $user->password)) {
             throw new \Exception("Invalid Credentials");

@@ -32,14 +32,15 @@ class FileController extends Controller
      * description="Create file",
      * operationId="fileCreate",
      * tags={"File"},
-     * security={ {"bearer": {} }},
+     * security={ {"bearerAuth": {} }},
      * @OA\RequestBody(
-     *    required=true,
-     *    description="Input Details",
-     *    @OA\JsonContent(
+     * @OA\MediaType(
+     *    mediaType="multipart/form-data",
+     *    @OA\Schema(
      *       required={"file"},
-     *       @OA\Property(property="file", type="file"),
+     *       @OA\Property(property="file", type="string",format="binary"),
      *    ),
+     *  ),
      * ),
      * @OA\Response(
      *    response=200,
@@ -85,7 +86,7 @@ class FileController extends Controller
      *    description="Success",
      *    @OA\JsonContent(
      *       @OA\Property(property="status", type="boolean", example="true"),
-     *       @OA\Property(property="message", type="string", example="All file fetched"),
+     *       @OA\Property(property="message", type="string", example="file fetched"),
      *       @OA\Property(property="data", type="object"),
      *    )
      *   ),

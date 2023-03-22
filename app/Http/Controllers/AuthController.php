@@ -119,7 +119,7 @@ class AuthController extends Controller
      * description="Logout user and invalidate token",
      * operationId="authLogout",
      * tags={"admin"},
-     * security={ {"bearer": {} }},
+     * security={ {"bearerAuth": {} }},
      * @OA\Response(
      *    response=200,
      *    description="Success"

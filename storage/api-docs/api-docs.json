@@ -156,7 +156,7 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -240,17 +240,16 @@
                 "description": "Create file",
                 "operationId": "fileCreate",
                 "requestBody": {
-                    "description": "Input Details",
-                    "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "file"
                                 ],
                                 "properties": {
                                     "file": {
-                                        "type": "file"
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -285,7 +284,7 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -322,7 +321,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "All file fetched"
+                                            "example": "file fetched"
                                         },
                                         "data": {
                                             "type": "object"
@@ -488,7 +487,7 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -619,7 +618,7 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearerAuth": []
                     }
                 ]
             },
@@ -662,7 +661,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/admin/user-listing": {
@@ -747,7 +751,7 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearerAuthAuth": []
                     }
                 ]
             }
@@ -823,7 +827,7 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -854,7 +858,7 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearerAuth": []
                     }
                 ]
             }

@@ -30,7 +30,7 @@ class UserController extends Controller
      * description="Get all non admin users",
      * operationId="usersListing",
      * tags={"admin"},
-     * security={ {"bearer": {} }},
+     * security={ {"bearerAuthAuth": {} }},
      *  @OA\Parameter(name="limit", in="query", description="limit", required=false,
      *        @OA\Schema(type="integer")
      *    ),
@@ -95,7 +95,7 @@ class UserController extends Controller
      * description="Update user record",
      * operationId="userUpdate",
      * tags={"admin"},
-     * security={ {"bearer": {} }},
+     * security={ {"bearerAuth": {} }},
      * @OA\Parameter(name="uuid", in="path", description="uuid of user", required=true,
      *        @OA\Schema(type="string")
      *    ),
@@ -143,7 +143,7 @@ class UserController extends Controller
      * description="Delete user record ",
      * operationId="userDelete",
      * tags={"admin"},
-     * security={ {"bearer": {} }},
+     * security={ {"bearerAuth": {} }},
      * @OA\Parameter(name="uuid", in="path", description="uuid of product", required=true,
      *        @OA\Schema(type="string")
      *    ),
