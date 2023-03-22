@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Resources\FileResource;
@@ -18,8 +19,6 @@ class FileService
 
     /**
      * Get a file using the uuid
-     *
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     public function getFile(string $uuid): \Illuminate\Http\Resources\Json\JsonResource
     {
@@ -28,10 +27,6 @@ class FileService
 
     /**
      * Upload a file
-     *
-     * @param array $valid
-     *
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     public function uploadFile(array $valid): \Illuminate\Http\Resources\Json\JsonResource
     {

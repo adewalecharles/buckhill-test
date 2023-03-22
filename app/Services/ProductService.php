@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Resources\ProductResource;
@@ -13,8 +14,6 @@ class ProductService
 
     /**
      * This class construct
-     *
-     * @param ProductRepository $productRepository
      */
     public function __construct(ProductRepository $productRepository)
     {
@@ -24,7 +23,6 @@ class ProductService
     /**
      * Get all products in the system
      *
-     * @return array
      *
      * @throws \Exception
      */
@@ -40,9 +38,7 @@ class ProductService
     /**
      * Create a new product record
      *
-     * @param array $valid
      *
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      *
      * @throws \Exception
      */
@@ -60,9 +56,7 @@ class ProductService
     /**
      * Get a single product using uuid
      *
-     * @param string $uuid
      *
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      *
      * @throws \Exception
      */
@@ -79,12 +73,6 @@ class ProductService
 
     /**
      * Update a Product record
-     *
-     * @param array $valid
-     *
-     * @param string $uuid
-     *
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     public function updateProduct(array $valid, string $uuid): \Illuminate\Http\Resources\Json\JsonResource
     {
@@ -99,22 +87,9 @@ class ProductService
 
     /**
      * Delete a Product record
-     *
-     * @param string $uuid
-     *
-     * @return bool
      */
     public function deleteProduct(string $uuid): bool
     {
-        $product =  $this->productRepository->deleteProduct($uuid);
-
-        if ($product) {
-            $product->delete();
-            return true;
-        }
-
-        throw new \Exception('Could not delete product');
+        return $this->productRepository->deleteProduct($uuid);
     }
-
-
 }

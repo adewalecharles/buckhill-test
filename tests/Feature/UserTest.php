@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -19,7 +17,7 @@ class UserTest extends TestCase
             'password' => 'admin',
         ]);
         $response = $this->get('/api/v1/admin/user-listing', [
-            "Authorization" => "Bearer " . $login->json()['data']['token']
+            'Authorization' => 'Bearer '.$login->json()['data']['token'],
         ]);
 
         $response->assertStatus(200);
@@ -29,14 +27,14 @@ class UserTest extends TestCase
             'data' => [
                 'data' => [
 
-                ]
+                ],
             ],
         ]);
     }
 
-    public function test_admin_can_edit_user():void
+    public function test_admin_can_edit_user(): void
     {
-        $user = User::where('is_admin', false)->where('id', rand(1,10))->first();
+        $user = User::where('is_admin', false)->where('id', rand(1, 10))->first();
 
         $login = $this->post('/api/v1/admin/login', [
             'email' => 'admin@buckhill.co.uk',
@@ -44,17 +42,17 @@ class UserTest extends TestCase
         ]);
 
         $response = $this->put('/api/v1/admin/user-edit/'.$user->uuid,
-        [
+            [
                 'first_name' => 'adewale',
                 'last_name' => 'adewale',
-                'is_marketing' => rand(0,1),
+                'is_marketing' => rand(0, 1),
                 'is_admin' => true,
                 'phone_number' => fake()->phoneNumber(),
-                'address' => fake()->address()
-        ],
-        [
-            "Authorization" => "Bearer " . $login->json()['data']['token']
-        ]);
+                'address' => fake()->address(),
+            ],
+            [
+                'Authorization' => 'Bearer '.$login->json()['data']['token'],
+            ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -64,7 +62,7 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_delete_user():void
+    public function test_admin_can_delete_user(): void
     {
         $user = User::where('is_admin', false)->where('id', rand(1, 10))->first();
 
@@ -72,8 +70,8 @@ class UserTest extends TestCase
             'email' => 'admin@buckhill.co.uk',
             'password' => 'admin',
         ]);
-        $response = $this->delete('/api/v1/admin/user-delete/'.$user->uuid,[], [
-            "Authorization" => "Bearer " . $login->json()['data']['token']
+        $response = $this->delete('/api/v1/admin/user-delete/'.$user->uuid, [], [
+            'Authorization' => 'Bearer '.$login->json()['data']['token'],
         ]);
         $response->assertStatus(200);
         $response->assertJsonStructure([

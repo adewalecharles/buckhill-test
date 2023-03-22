@@ -23,8 +23,8 @@ class ProductResource extends JsonResource
             'category' => new CategoryResource($this->category),
             'metadata' => $this->metadata,
             'created_at' => $this->created_at,
-            'updated_at'=> $this->updated_at,
-            'deleted_at' => $this->deleted_at
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
         ];
     }
 }

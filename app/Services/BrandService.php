@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Resources\BrandResource;
@@ -16,13 +17,9 @@ class BrandService
         $this->brandRepository = $brandRepository;
     }
 
-
     /**
      * Get all brands
-     *
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-
     public function getAllBrands(): \Illuminate\Http\Resources\Json\JsonResource
     {
         return  BrandResource::collection($this->brandRepository->getAllBrands());

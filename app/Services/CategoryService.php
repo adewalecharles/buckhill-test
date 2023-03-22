@@ -17,13 +17,9 @@ class CategoryService
         $this->categoryRepository = $categoryRepository;
     }
 
-
     /**
      * Get all categories
-     *
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-
     public function getAllCategories(): \Illuminate\Http\Resources\Json\JsonResource
     {
         return CategoryResource::collection($this->categoryRepository->getAllCategories());

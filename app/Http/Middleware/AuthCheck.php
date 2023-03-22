@@ -24,35 +24,35 @@ class AuthCheck
         $token = $request->bearerToken();
 
         // check if token is passed or not
-        if (!$token) {
-           return response()->json([
-            'status' => false,
-            'message' => 'Bearer token is required'
-           ], 401);
+        if (! $token) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Bearer token is required',
+            ], 401);
         }
 
         // get user from token
         $user = $this->decodeToken($token);
 
         // check if user is found
-        if (!$user) {
+        if (! $user) {
             return response()->json([
                 'status' => false,
-                'message' => 'Unauthenticated'
+                'message' => 'Unauthenticated',
             ], 401);
         }
 
         // validate if token is valid then continue log user in and continue request
-        if($this->validateToken($token, $user))
-        {
+        if ($this->validateToken($token, $user)) {
             Auth::loginUsingId($user->id);
+
             return $next($request);
         }
 
         // throw an error if token is not valid
         return response()->json([
             'status' => false,
-            'message' => 'Unauthenticated'
+            'message' => 'Unauthenticated',
         ], 401);
     }
 
@@ -63,6 +63,5 @@ class AuthCheck
 
         //get the user from the token uuid claim
         return User::where('uuid', $decodedToken->claims()->get('user_uuid'))->first();
-
     }
 }

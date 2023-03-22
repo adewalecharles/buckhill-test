@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Services\ProductService;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductController extends Controller
 {
@@ -15,8 +15,6 @@ class ProductController extends Controller
 
     /**
      * This controller construct
-     *
-     * @param ProductService $productService
      */
     public function __construct(ProductService $productService)
     {
@@ -26,7 +24,6 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Get(
      * path="/products",
@@ -34,25 +31,38 @@ class ProductController extends Controller
      * description="Get all products",
      * operationId="productsListing",
      * tags={"Product"},
+     *
      *  @OA\Parameter(name="limit", in="query", description="limit", required=false,
+     *
      *        @OA\Schema(type="integer")
      *    ),
+     *
      *    @OA\Parameter(name="page", in="query", description="the page number", required=false,
+     *
      *        @OA\Schema(type="integer")
      *    ),
+     *
      *    @OA\Parameter(name="desc", in="query", description="true or false", required=false,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      *      @OA\Parameter(name="q", in="query", description="search parameter", required=false,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      *    @OA\Parameter(name="sortBy", in="query", description="column to sort with, e.g id, title, price, created_at", required=false,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="All Products"),
      *       @OA\Property(property="data", type="object"),
@@ -63,7 +73,7 @@ class ProductController extends Controller
     public function index(): \Illuminate\Http\JsonResponse
     {
         try {
-            return $this->success('All Products',$this->productService->getAllProducts());
+            return $this->success('All Products', $this->productService->getAllProducts());
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -72,9 +82,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param ProductRequest $request
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Post(
      * path="/product",
@@ -83,21 +91,27 @@ class ProductController extends Controller
      * operationId="productCreate",
      * tags={"Product"},
      * security={ {"bearerAuth": {} }},
+     *
      * @OA\RequestBody(
      *    required=true,
      *    description="Input Details",
+     *
      *    @OA\JsonContent(
      *       required={"title", "price", "description", "metadata", "category_uuid"},
+     *
      *       @OA\Property(property="title", type="string", example="Nike Shoe"),
      *       @OA\Property(property="price", type="numeric", example="192.10"),
      *       @OA\Property(property="description", type="string", example="A clean Nike shoe with Black lace"),
      *       @OA\Property(property="metadata", type="object"),
      *    ),
      * ),
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="Product Created"),
      *       @OA\Property(property="data", type="object"),
@@ -123,20 +137,24 @@ class ProductController extends Controller
      * description="Get a single product",
      * operationId="productList",
      * tags={"Product"},
+     *
      *  @OA\Parameter(name="uuid", in="path", description="uuid of product", required=true,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="All users fetched"),
      *       @OA\Property(property="data", type="object"),
      *    )
      *   ),
      * )
-     *
      */
     public function show(string $uuid): \Illuminate\Http\JsonResponse
     {
@@ -150,10 +168,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param ProductRequest $request
-     * @param string $uuid
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Put(
      * path="/product/{uuid}",
@@ -162,24 +177,32 @@ class ProductController extends Controller
      * operationId="productUpdate",
      * tags={"Product"},
      * security={ {"bearerAuth": {} }},
+     *
      * @OA\Parameter(name="uuid", in="path", description="uuid of product", required=true,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      * @OA\RequestBody(
      *    required=true,
      *    description="Input Details",
+     *
      *    @OA\JsonContent(
      *       required={"title", "price","description","metadata","category_uuid"},
+     *
      *       @OA\Property(property="title", type="string", example="Nike Shoe"),
      *      @OA\Property(property="price", type="numeric", example="192.10"),
      *      @OA\Property(property="description", type="string", example="A clean Nike shoe with Black lace"),
      *       @OA\Property(property="metadata", type="object", example="{}"),
      *    ),
      * ),
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="File Uploaded"),
      *       @OA\Property(property="data", type="object"),
@@ -190,18 +213,18 @@ class ProductController extends Controller
     public function update(ProductRequest $request, string $uuid): \Illuminate\Http\JsonResponse
     {
         try {
-            return $this->success('Product Fetched', $this->productService->updateProduct($request->validated(),$uuid));
+            return $this->success('Product Fetched', $this->productService->updateProduct($request->validated(), $uuid));
+        } catch (ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), [], $e->getCode());
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $uuid
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Delete(
      * path="/product/{uuid}",
@@ -210,13 +233,18 @@ class ProductController extends Controller
      * operationId="deleteProduct",
      * tags={"Product"},
      * security={ {"bearerAuth": {} }},
+     *
      *  @OA\Parameter(name="uuid", in="path", description="uuid of product", required=true,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="Product Deleted"),
      *    )
@@ -227,8 +255,10 @@ class ProductController extends Controller
     {
         try {
             return $this->success('Product Deleted', $this->productService->deleteProduct($uuid));
+        } catch (ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), [], $e->getCode());
         }
     }
 }

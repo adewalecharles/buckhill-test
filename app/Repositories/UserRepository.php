@@ -1,41 +1,49 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserRepository
 {
-
     /**
      * get a single user using user uuid
      *
-     * @param string $uuid
      *
      * @return User
      */
     public function getUser(string $uuid): ?User
     {
-        return User::where('uuid', $uuid)->first();
+        $user = User::where('uuid', $uuid)->first();
+
+        if (! $user) {
+            throw new ModelNotFoundException('User is not found', 404);
+        }
+
+        return $user;
     }
 
     /**
      * get a single user using user email
      *
-     * @param string $email
      *
      * @return User
      */
-    public function getUserByEmail(string $email):?User
+    public function getUserByEmail(string $email): ?User
     {
-        return User::where('email', $email)->first();
+        $user = User::where('email', $email)->first();
+        if (! $user) {
+            throw new ModelNotFoundException('User is not found', 404);
+        }
+
+        return $user;
     }
 
     /**
      * Get all users
-     *
-     * @return mixed
      */
-    public function getAllUsers():mixed
+    public function getAllUsers(): mixed
     {
         return User::searchAndSort(
             request('q'), // search query
@@ -49,7 +57,6 @@ class UserRepository
     /**
      * Creates a new record of a user
      *
-     * @param array $valid
      *
      * @return User
      */
@@ -61,8 +68,6 @@ class UserRepository
     /**
      * Update a user record
      *
-     * @param array $valid
-     * @param string $uuid
      *
      * @return User
      */
@@ -76,26 +81,22 @@ class UserRepository
             return $user;
         }
 
-        return false;
-
+        throw new ModelNotFoundException('User is not found', 404);
     }
 
     /**
      * Delete User
-     *
-     * @param string $uuid
-     *
-     * @return bool
      */
-    public function deleteUser(string $uuid):bool
+    public function deleteUser(string $uuid): bool
     {
         $user = User::where('uuid', $uuid)->first();
 
         if ($user) {
-             $user->delete();
-             return true;
+            $user->delete();
+
+            return true;
         }
 
-        return false;
+        throw new ModelNotFoundException('User is not found', 404);
     }
 }

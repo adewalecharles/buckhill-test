@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Database\Factories\BrandFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Brand limitBy($limit)
  * @method static \Illuminate\Database\Eloquent\Builder|Brand newModelQuery()
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Brand whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Brand whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Brand whereUuid($value)
+ *
  * @mixin \Eloquent
  */
 class Brand extends Model
@@ -45,7 +47,7 @@ class Brand extends Model
             'created_at',
         ];
 
-        if (!in_array($sortBy, $sortFields)) {
+        if (! in_array($sortBy, $sortFields)) {
             $sortBy = 'created_at';
         }
 
@@ -55,12 +57,13 @@ class Brand extends Model
     public function scopeLimitBy($query, $limit)
     {
         $limit = $limit ?: 50;
+
         return $query->limit($limit);
     }
 
     public function scopeSearch($query, $searchQuery)
     {
-        if (!$searchQuery) {
+        if (! $searchQuery) {
             return $query;
         }
 

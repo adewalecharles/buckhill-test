@@ -1,12 +1,12 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Models\Product;
-use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductRepository
 {
-
     /**
      * Get all products, all params to search and sort and pulled directly from the request helper method
      */
@@ -24,7 +24,6 @@ class ProductRepository
     /**
      * Create a new Product record
      *
-     * @param array $valid
      *
      * @return Product
      */
@@ -42,47 +41,44 @@ class ProductRepository
      */
     public function getProduct(string $uuid): ?Product
     {
-        return Product::where('uuid', $uuid)->first();
+        $product = Product::where('uuid', $uuid)->first();
+
+        if (! $product) {
+            throw new ModelNotFoundException('Product is not found', 404);
+        }
+
+        return $product;
     }
 
     /**
      * Update a Product record
-     *
-     * @param array $valid
-     *
-     * @param string $uuid
-     *
-     * @return mixed
      */
     public function updateProduct(array $valid, string $uuid): mixed
     {
         $product = Product::where('uuid', $uuid)->first();
 
         if ($product) {
-           $product->update($valid);
-           return $product;
+            $product->update($valid);
+
+            return $product;
         }
-        return false;
+
+        throw new ModelNotFoundException('Product is not found', 404);
     }
 
     /**
      * Delete a Product record
-     *
-     * @param string $uuid
-     *
-     * @return mixed
      */
     public function deleteProduct(string $uuid): mixed
     {
-        $product =  Product::where('uuid', $uuid)->first();
+        $product = Product::where('uuid', $uuid)->first();
 
         if ($product) {
             $product->delete();
-            return $product;
+
+            return true;
         }
 
-        return false;
-
+        throw new ModelNotFoundException('Product is not found', 404);
     }
-
 }

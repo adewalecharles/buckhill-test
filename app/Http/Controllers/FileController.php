@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UploadFileRequest;
 use App\Services\FileService;
 use DB;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FileController extends Controller
 {
@@ -22,9 +22,7 @@ class FileController extends Controller
     /**
      * upload and create a file
      *
-     * @param UploadFileRequest $request
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\POST(
      * path="/file",
@@ -33,19 +31,26 @@ class FileController extends Controller
      * operationId="fileCreate",
      * tags={"File"},
      * security={ {"bearerAuth": {} }},
+     *
      * @OA\RequestBody(
+     *
      * @OA\MediaType(
      *    mediaType="multipart/form-data",
+     *
      *    @OA\Schema(
      *       required={"file"},
+     *
      *       @OA\Property(property="file", type="string",format="binary"),
      *    ),
      *  ),
      * ),
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="File Uploaded"),
      *       @OA\Property(property="data", type="object"),
@@ -57,34 +62,40 @@ class FileController extends Controller
     {
         try {
             DB::beginTransaction();
-            $response =  $this->fileService->uploadFile($request->validated());
+            $response = $this->fileService->uploadFile($request->validated());
             DB::commit();
+
             return $this->success('File Uploaded', $response);
+        } catch (ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), [], $e->getCode());
         }
     }
 
     /**
      * Get a single file
      *
-     * @param string $uuid
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Get(
      * path="/file/{uuid}",
      * summary="Get file",
      * description="Get a single file",
      * operationId="fileList",
+     *
      * @OA\Parameter(name="uuid", in="path", description="uuid of file", required=true,
+     *
      *        @OA\Schema(type="string")
      *    ),
      * tags={"File"},
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="file fetched"),
      *       @OA\Property(property="data", type="object"),
@@ -96,8 +107,10 @@ class FileController extends Controller
     {
         try {
             return $this->success('File fetched successfully', $this->fileService->getFile($uuid));
+        } catch (ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), [], $e->getCode());
         }
     }
 }

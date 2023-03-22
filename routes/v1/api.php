@@ -6,7 +6,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,30 +19,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::group(['prefix' => 'admin'], function() {
+Route::group(['prefix' => 'admin'], function () {
     Route::post('create', [AuthController::class, 'create']);
     Route::post('login', [AuthController::class, 'login']);
 
-    Route::group(['middleware' => ['authenticated', 'isAdmin']], function() {
+    Route::group(['middleware' => ['authenticated', 'isAdmin']], function () {
         Route::get('logout', [AuthController::class, 'logout']);
 
         Route::get('user-listing', [UserController::class, 'index']);
-        Route::put('user-edit/{uuid}',[UserController::class, 'update']);
-        Route::delete('user-delete/{uuid}',[UserController::class, 'destroy']);
+        Route::put('user-edit/{uuid}', [UserController::class, 'update']);
+        Route::delete('user-delete/{uuid}', [UserController::class, 'destroy']);
     });
-
 });
 
 Route::get('brands', [BrandController::class, 'index']);
-Route::get('categories', [CategoryController::class,'index']);
+Route::get('categories', [CategoryController::class, 'index']);
 
-Route::get('file/{file}',[FileController::class, 'show']);
-Route::post('file',[FileController::class, 'store'])->middleware('authenticated');
+Route::get('file/{file}', [FileController::class, 'show']);
+Route::post('file', [FileController::class, 'store'])->middleware('authenticated');
 
-Route::get('products', [ProductController::class,'index']);
-Route::post('product',[ProductController::class, 'store'])->middleware('authenticated');
-Route::get('product/{product}',[ProductController::class,'show']);
-Route::put('product/{product}',[ProductController::class,'update'])->middleware('authenticated');
+Route::get('products', [ProductController::class, 'index']);
+Route::post('product', [ProductController::class, 'store'])->middleware('authenticated');
+Route::get('product/{product}', [ProductController::class, 'show']);
+Route::put('product/{product}', [ProductController::class, 'update'])->middleware('authenticated');
 Route::delete('product/{product}', [ProductController::class, 'destroy'])->middleware('authenticated');
-

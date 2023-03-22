@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Category|null $category
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product onlyTrashed()
@@ -36,30 +37,32 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Product withoutTrashed()
+ *
  * @property string $description
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Product limitBy($limit)
  * @method static \Illuminate\Database\Eloquent\Builder|Product search($searchQuery)
  * @method static \Illuminate\Database\Eloquent\Builder|Product sortBy($sortBy, $desc)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
+ *
  * @mixin \Eloquent
  */
 class Product extends Model
 {
     use HasFactory, SoftDeletes, HasUuid, HasRouteKey;
 
-    protected $fillable = ['category_uuid','title','price', 'description', 'metadata'];
+    protected $fillable = ['category_uuid', 'title', 'price', 'description', 'metadata'];
 
     protected $casts = [
-        'metadata' => 'array'
+        'metadata' => 'array',
     ];
-
 
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_uuid', 'uuid');
     }
 
-    public function scopeSortBy($query, $sortBy, $desc):mixed
+    public function scopeSortBy($query, $sortBy, $desc): mixed
     {
         $sortFields = [
             'id',
@@ -68,7 +71,7 @@ class Product extends Model
             'created_at',
         ];
 
-        if (!in_array($sortBy, $sortFields)) {
+        if (! in_array($sortBy, $sortFields)) {
             $sortBy = 'created_at';
         }
 
@@ -78,12 +81,13 @@ class Product extends Model
     public function scopeLimitBy($query, $limit)
     {
         $limit = $limit ?: 50;
+
         return $query->limit(intval($limit));
     }
 
-    public function scopeSearch($query, $searchQuery):mixed
+    public function scopeSearch($query, $searchQuery): mixed
     {
-        if (!$searchQuery) {
+        if (! $searchQuery) {
             return $query;
         }
 
@@ -93,7 +97,7 @@ class Product extends Model
             ->orWhere('email', 'like', "%$searchQuery%")
             ->orWhere('phone_number', 'like', "%$searchQuery%")
             ->orWhere('address', 'like', "%$searchQuery%")
-            ->orWhereHas('category', function($query) use ($searchQuery) {
+            ->orWhereHas('category', function ($query) use ($searchQuery) {
                 $query->where('title', 'like', "%$searchQuery%");
             });
         });
@@ -102,15 +106,13 @@ class Product extends Model
     /**
      * Search and sort the product record
      *
-     * @param string $searchQuery
-     * @param string $sortBy
-     * @param string $desc
-     * @param string $limit
-     * @param string $perPage
-     *
-     * @return mixed
+     * @param  string  $searchQuery
+     * @param  string  $sortBy
+     * @param  string  $desc
+     * @param  string  $limit
+     * @param  string  $perPage
      */
-    public static function searchAndSort($searchQuery, $sortBy, $desc, $limit, $perPage):mixed
+    public static function searchAndSort($searchQuery, $sortBy, $desc, $limit, $perPage): mixed
     {
         return static::search($searchQuery)
             ->sortBy($sortBy, $desc)

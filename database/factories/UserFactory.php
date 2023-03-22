@@ -24,10 +24,10 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => 'userpassword', // password
             'remember_token' => Str::random(10),
-            'is_marketing' => rand(0,1),
+            'is_marketing' => rand(0, 1),
             'is_admin' => false,
             'phone_number' => fake()->phoneNumber(),
-            'address' => fake()->address()
+            'address' => fake()->address(),
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CategoryService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -20,7 +21,6 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Get(
      * path="/categories",
@@ -28,10 +28,13 @@ class CategoryController extends Controller
      * description="Get all categories",
      * operationId="categoriesListing",
      * tags={"Category"},
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="All Category fetched"),
      *       @OA\Property(property="data", type="object"),
@@ -43,8 +46,10 @@ class CategoryController extends Controller
     {
         try {
             return $this->success('All Categories', $this->categoryService->getAllCategories());
+        } catch (ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
-           return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), [], $e->getCode());
         }
     }
 

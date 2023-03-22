@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class IsAdmin
 {
     use HasJwtToken;
+
     /**
      * Handle an incoming request.
      *
@@ -28,14 +29,14 @@ class IsAdmin
         $user = User::where('uuid', $parsedToken->claims()->get('user_uuid'))->first();
 
         //check if user is admin
-        if($user->is_admin) {
+        if ($user->is_admin) {
             return $next($request);
         }
 
         // return error if user is not admin
         return response()->json([
             'status' => false,
-            'message' => 'You are not permitted to access to use this resource'
-        ],400);
+            'message' => 'You are not permitted to access to use this resource',
+        ], 400);
     }
 }

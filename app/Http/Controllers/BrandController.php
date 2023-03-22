@@ -26,10 +26,13 @@ class BrandController extends Controller
      * description="Get all brands",
      * operationId="brandsListing",
      * tags={"Brand"},
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="All Brand fetched"),
      *       @OA\Property(property="data", type="object"),
@@ -40,9 +43,9 @@ class BrandController extends Controller
     public function index()
     {
         try {
-           return $this->success('All brands',$this->brandService->getAllBrands());
+            return $this->success('All brands', $this->brandService->getAllBrands());
         } catch (\Exception $e) {
-           return $this->error($e->getMessage());
+            return $this->error($e->getMessage());
         }
     }
 

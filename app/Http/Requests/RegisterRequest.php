@@ -28,8 +28,8 @@ class RegisterRequest extends FormRequest
             'last_name' => 'required|string|alpha_dash|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:5|confirmed',
-            'avatar' =>  'sometimes|nullable|string|exists:files,uuid',
-            'address' =>'required|string',
+            'avatar' => 'sometimes|nullable|string|exists:files,uuid',
+            'address' => 'required|string',
             'phone_number' => 'required|string',
         ];
     }

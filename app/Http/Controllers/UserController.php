@@ -6,6 +6,7 @@ use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
 use App\Services\UserService;
 use DB;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -19,10 +20,10 @@ class UserController extends Controller
     {
         $this->userService = $userService;
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Get(
      * path="/admin/user-listing",
@@ -31,25 +32,38 @@ class UserController extends Controller
      * operationId="usersListing",
      * tags={"admin"},
      * security={ {"bearerAuthAuth": {} }},
+     *
      *  @OA\Parameter(name="limit", in="query", description="limit", required=false,
+     *
      *        @OA\Schema(type="integer")
      *    ),
+     *
      *    @OA\Parameter(name="page", in="query", description="the page number", required=false,
+     *
      *        @OA\Schema(type="integer")
      *    ),
+     *
      *    @OA\Parameter(name="desc", in="query", description="true or false", required=false,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      *      @OA\Parameter(name="q", in="query", description="search parameter", required=false,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      *    @OA\Parameter(name="sortBy", in="query", description="column to sort with, e.g id, first_name, last_name, created_at", required=false,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="status", type="boolean", example="true"),
      *       @OA\Property(property="message", type="string", example="All users fetched"),
      *       @OA\Property(property="data", type="object"),
@@ -57,19 +71,19 @@ class UserController extends Controller
      *   ),
      * )
      */
-    public function index():\Illuminate\Http\JsonResponse
+    public function index(): \Illuminate\Http\JsonResponse
     {
         try {
             return $this->success('All users fetched', $this->userService->getAllUsers());
+        } catch (ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), [], $e->getCode());
         }
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
      */
     public function store(Request $request)
     {
@@ -87,7 +101,6 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Put(
      * path="/admin/user-edit/{uuid}",
@@ -96,14 +109,19 @@ class UserController extends Controller
      * operationId="userUpdate",
      * tags={"admin"},
      * security={ {"bearerAuth": {} }},
+     *
      * @OA\Parameter(name="uuid", in="path", description="uuid of user", required=true,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      * @OA\RequestBody(
      *    required=true,
      *    description="Input User Details",
+     *
      *    @OA\JsonContent(
      *       required={"first_name","last_name","email", "address", "phone_number"},
+     *
      *       @OA\Property(property="first_name", type="string", example="adewale"),
      *       @OA\Property(property="last_name", type="string", example="charles"),
      *       @OA\Property(property="address", type="string", example="no 3, york lane"),
@@ -112,6 +130,7 @@ class UserController extends Controller
      *      @OA\Property(property="is_marketing", type="boolean", example="true"),
      *    ),
      * ),
+     *
      *   @OA\Response(
      *    response=200,
      *    description="Success"
@@ -124,18 +143,22 @@ class UserController extends Controller
             DB::beginTransaction();
             $response = $this->userService->updateUser($request->validated(), $uuid);
             DB::commit();
-            return $this->success('User updated', $response);
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage());
-            DB::rollBack();
-        }
 
+            return $this->success('User updated', $response);
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+
+            return $this->error($e->getMessage(), [], $e->getCode());
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->error($e->getMessage(), [], $e->getCode());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Delete(
      * path="/admin/user-delete/{uuid}",
@@ -144,9 +167,12 @@ class UserController extends Controller
      * operationId="userDelete",
      * tags={"admin"},
      * security={ {"bearerAuth": {} }},
+     *
      * @OA\Parameter(name="uuid", in="path", description="uuid of product", required=true,
+     *
      *        @OA\Schema(type="string")
      *    ),
+     *
      * @OA\Response(
      *    response=200,
      *    description="User Deleted"
@@ -156,11 +182,11 @@ class UserController extends Controller
     public function destroy(string $uuid): \Illuminate\Http\JsonResponse
     {
         try {
-
-            return $this->userService->deleteUser($uuid) ? $this->success('User Deleted', []) :
-                 $this->error('Could not delete User');
+            return $this->success('User Deleted', [], 200);
+        } catch (ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
-            return $this->error('An error occurred');
+            return $this->error($e->getMessage(), [], $e->getCode());
         }
     }
 }

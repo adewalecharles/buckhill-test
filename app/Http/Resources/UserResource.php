@@ -21,12 +21,12 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'password' => $this->password,
             'avatar' => $this->avatar,
-            'address' =>  $this->address,
+            'address' => $this->address,
             'phone_number' => $this->phone_number,
             'is_marketing' => $this->is_marketing ? true : false,
             'last_login_at' => $this->last_login_at,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
         ];
     }
 }

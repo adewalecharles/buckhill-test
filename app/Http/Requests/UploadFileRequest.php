@@ -22,17 +22,16 @@ class UploadFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|image|mimes:png,jpg,jpeg,svg,gif|max:10240'
+            'file' => 'required|image|mimes:png,jpg,jpeg,svg,gif|max:10240',
         ];
     }
-
 
     public function messages()
     {
         return [
             'file.max' => 'The document may not be greater than 10 megabytes',
             'file.required' => 'You must upload a valid file',
-            'file.image' => 'File must be a valid file'
+            'file.image' => 'File must be a valid file',
         ];
     }
 }

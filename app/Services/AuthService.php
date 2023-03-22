@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Services;
 
+use App\Exceptions\InvalidUserException;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\AuthRepository;
 use App\Repositories\UserRepository;
 use Carbon\CarbonImmutable;
 use Hash;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Lcobucci\JWT\Token\Plain;
 
@@ -25,11 +26,7 @@ class AuthService
 
     /**
      * Auth Service constructor
-     *
-     * @param AuthRepository $authRepository
-     * @param UserRepository $userRepository
      */
-
     public function __construct(AuthRepository $authRepository, UserRepository $userRepository)
     {
         $this->authRepository = $authRepository;
@@ -39,7 +36,6 @@ class AuthService
     /**
      * Method to register users
      *
-     * @param array $valid
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Exception
@@ -55,7 +51,6 @@ class AuthService
         Auth::login($user);
 
         if (Auth::check()) {
-
             // create jwt token
             $jwt = $this->generateAuthToken($user);
 
@@ -66,19 +61,16 @@ class AuthService
                 'token' => $jwt->toString(),
                 'type' => 'Bearer',
                 'expires' => $token->expires_at,
-                'user' => new UserResource($user)
+                'user' => new UserResource($user),
             ];
-
         }
 
         throw new \Exception('Could not authenticate user');
-
     }
 
     /**
      * Login users
      *
-     * @param array $valid
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Exception
@@ -87,24 +79,18 @@ class AuthService
     {
         $user = $this->userRepository->getUserByEmail($valid['email']);
 
-        if (!$user) {
-           throw new \Exception('User does not exists');
+        if (! $user->is_admin) {
+            throw new InvalidUserException('You do not have the permission to access this resource', 403);
         }
-
-        if (!$user->is_admin) {
-            throw new \Exception('User is not an admin account');
-        }
-
         //check password
-        if (!$user || !Hash::check($valid['password'], $user->password)) {
-            throw new \Exception("Invalid Credentials");
+        if (! $user || ! Hash::check($valid['password'], $user->password)) {
+            throw new \Exception('Invalid Credentials', 400);
         }
 
         // log user in
         Auth::loginUsingId($user->id);
 
         if (Auth::check()) {
-
             // create jwt token
             $jwt = $this->generateAuthToken($user);
 
@@ -118,44 +104,35 @@ class AuthService
                 'token' => $jwt->toString(),
                 'type' => 'Bearer',
                 'expires' => $token->expires_at,
-                'user' => new UserResource($user)
+                'user' => new UserResource($user),
             ];
         }
 
-        throw new \Exception('Invalid Credentials');
-
+        throw new \Exception('Could not Authenticate User', 401);
     }
-
 
     /**
      * Logout authenticated user
-     *
-     * @return bool
      */
-    public function logoutUser():bool
+    public function logoutUser(): bool
     {
         $this->authRepository->deleteAuthToken(auth()->user());
         Auth::logout();
+
         return true;
     }
 
-
     /**
      * Function to generate new JWT token
-     *
-     * @param User $user
-     *
-     * @return Plain
      */
-    private function generateAuthToken(User $user):Plain
+    private function generateAuthToken(User $user): Plain
     {
-       return $user->setExpiresAt(CarbonImmutable::now()->addMinutes(120))
-            ->setClaims([
-                'user_uuid' => (string)$user->uuid,
-                'unique_id' => \Illuminate\Support\Str::random(10),
-            ])
-            ->setSubject('auth-token')
-            ->createToken();
+        return $user->setExpiresAt(CarbonImmutable::now()->addMinutes(120))
+             ->setClaims([
+                 'user_uuid' => (string) $user->uuid,
+                 'unique_id' => \Illuminate\Support\Str::random(10),
+             ])
+             ->setSubject('auth-token')
+             ->createToken();
     }
-
 }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InvalidUserException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use DB;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AuthController extends Controller
 {
@@ -17,8 +18,6 @@ class AuthController extends Controller
 
     /**
      * Auth controller construct
-     *
-     * @param AuthService $authService
      */
     public function __construct(AuthService $authService)
     {
@@ -28,8 +27,6 @@ class AuthController extends Controller
     /**
      * Method to register users
      *
-     * @param RegisterRequest $request
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Post(
      * path="/admin/create",
@@ -37,11 +34,14 @@ class AuthController extends Controller
      * description="Create an account",
      * operationId="authCreate",
      * tags={"admin"},
+     *
      * @OA\RequestBody(
      *    required=true,
      *    description="Input User Details",
+     *
      *    @OA\JsonContent(
      *       required={"first_name","last_name","email","password","password_confirmation", "address", "phone_number"},
+     *
      *       @OA\Property(property="first_name", type="string", example="adewale"),
      *       @OA\Property(property="last_name", type="string", example="charles"),
      *       @OA\Property(property="address", type="string", example="no 3, york lane"),
@@ -51,6 +51,7 @@ class AuthController extends Controller
      *       @OA\Property(property="password_confirmation", type="string", format="password", example="PassWord12345"),
      *    ),
      * ),
+     *
      *   @OA\Response(
      *    response=200,
      *    description="Success"
@@ -63,19 +64,18 @@ class AuthController extends Controller
             DB::beginTransaction();
             $response = $this->authService->registerUser($request->validated());
             DB::commit();
-            return $this->success('User created successfully',$response,200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->error($e->getMessage());
-        }
 
+            return $this->success('User created successfully', $response, 200);
+        } catch (ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
+        }
     }
 
     /**
      * Method to log in users
      *
-     * @param LoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Post(
      * path="/admin/login",
@@ -83,35 +83,41 @@ class AuthController extends Controller
      * description="login an account",
      * operationId="authLogin",
      * tags={"admin"},
+     *
      * @OA\RequestBody(
      *    required=true,
      *    description="Input User Details",
+     *
      *    @OA\JsonContent(
      *       required={"email","password"},
+     *
      *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
      *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
      *    ),
      * ),
+     *
      *   @OA\Response(
      *    response=200,
      *    description="Success"
      *     ),
      * )
      */
-    public function login(LoginRequest $request):\Illuminate\Http\JsonResponse
+    public function login(LoginRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             return $this->success('User logged in successfully', $this->authService->loginUser($request->validated()));
+        } catch(ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
+        } catch(InvalidUserException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), [], $e->getCode());
         }
-
     }
 
     /**
      * Method to logout users
      *
-     * @return \Illuminate\Http\JsonResponse
      *
      * @OA\Get(
      * path="/admin/logout",
@@ -120,6 +126,7 @@ class AuthController extends Controller
      * operationId="authLogout",
      * tags={"admin"},
      * security={ {"bearerAuth": {} }},
+     *
      * @OA\Response(
      *    response=200,
      *    description="Success"
@@ -127,7 +134,9 @@ class AuthController extends Controller
      * @OA\Response(
      *    response=401,
      *    description="Returns when user is not authenticated",
+     *
      *    @OA\JsonContent(
+     *
      *       @OA\Property(property="message", type="string", example="Not authorized"),
      *    )
      * )
@@ -136,12 +145,13 @@ class AuthController extends Controller
     public function logout(): \Illuminate\Http\JsonResponse
     {
         try {
-            if ($this->authService->logoutUser()) {
-             return $this->success('Logout successful');
-            }
-            return $this->error('Logout Failed');
-        } catch (\Throwable $e) {
-            return $this->error($e->getMessage());
+            return $this->success('Logout successful');
+        } catch (ModelNotFoundException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
+        } catch (InvalidUserException $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), [], $e->getCode());
         }
     }
 }

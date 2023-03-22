@@ -295,7 +295,7 @@ return [
          * Constants which can be used in annotations
          */
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => config('app.url'). '/api/v1',
+            'L5_SWAGGER_CONST_HOST' => config('app.url').'/api/v1',
         ],
     ],
 ];

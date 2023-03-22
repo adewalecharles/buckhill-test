@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class AdminSeeder extends Seeder
@@ -23,7 +22,7 @@ class AdminSeeder extends Seeder
             'is_marketing' => 0,
             'is_admin' => true,
             'phone_number' => fake()->phoneNumber(),
-            'address' => fake()->address()
+            'address' => fake()->address(),
         ]);
     }
 }

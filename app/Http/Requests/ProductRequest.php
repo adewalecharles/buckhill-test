@@ -28,7 +28,7 @@ class ProductRequest extends FormRequest
             'metadata' => 'required|array',
             'metadata.brand' => 'required|uuid|exists:brands,uuid',
             'metadata.image' => 'required|uuid|exists:files,uuid',
-            'category_uuid' => 'required|uuid|exists:categories,uuid'
+            'category_uuid' => 'required|uuid|exists:categories,uuid',
         ];
     }
 }
