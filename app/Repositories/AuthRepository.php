@@ -20,7 +20,7 @@ class AuthRepository
      *
      * @return JwtToken
      */
-     public function createAuthToken(User $user, Plain $jwt):JwtToken
+     public function createAuthToken(User $user, Plain $jwt):?JwtToken
      {
 
        return JwtToken::updateOrCreate(

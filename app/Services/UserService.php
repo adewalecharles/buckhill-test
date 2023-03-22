@@ -21,9 +21,9 @@ class UserService
     /**
      * Get all users
      *
-     * @return \Illuminate\Http\Resources\Json\JsonResource
+     * @return array
      */
-    public function getAllUsers():\Illuminate\Http\Resources\Json\JsonResource
+    public function getAllUsers():array
     {
         return UserResource::collection($this->userRepository->getAllUsers())->response()->getData(true);
 
@@ -35,9 +35,9 @@ class UserService
      * @param array $valid
      * @param User $user
      *
-     * @return array
+     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function updateUser(array $valid, User $user)
+    public function updateUser(array $valid, User $user): \Illuminate\Http\Resources\Json\JsonResource
     {
         return new UserResource($this->userRepository->updateUser($valid, $user));
     }
@@ -47,9 +47,9 @@ class UserService
      *
      * @param string $uuid
      *
-     * @return bool
+     * @return bool|null
      */
-    public function deleteUser(string $uuid):bool
+    public function deleteUser(string $uuid):bool|null
     {
         return $this->userRepository->deleteUser($uuid);
     }

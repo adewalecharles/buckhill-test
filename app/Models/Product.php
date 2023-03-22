@@ -102,7 +102,7 @@ class Product extends Model
      * @param string $desc
      * @param string $limit
      * @param string $perPage
-     * 
+     *
      * @return mixed
      */
     public static function searchAndSort($searchQuery, $sortBy, $desc, $limit, $perPage):mixed

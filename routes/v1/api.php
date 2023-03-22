@@ -35,12 +35,15 @@ Route::group(['prefix' => 'admin'], function() {
 
 });
 
-Route::group(['middleware' => ['authenticated']], function() {
-    Route::apiResource('brands', BrandController::class);
-    Route::apiResource('categories', CategoryController::class);
+Route::get('brands', [BrandController::class, 'index']);
+Route::get('categories', [CategoryController::class,'index']);
 
-    Route::apiResource('files', FileController::class);
+Route::get('file/{file}',[FileController::class, 'show']);
+Route::post('file',[FileController::class, 'store'])->middleware('authenticated');
 
-    Route::apiResource('products', ProductController::class);
-});
+Route::get('products', [ProductController::class,'index']);
+Route::post('product',[ProductController::class, 'store'])->middleware('authenticated');
+Route::get('product/{product}',[ProductController::class,'show']);
+Route::put('product/{product}',[ProductController::class,'update'])->middleware('authenticated');
+Route::delete('product/{product}', [ProductController::class, 'destroy'])->middleware('authenticated');
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('category_uuid')->references('uuid')->on('categories');
             $table->string('title');
             $table->float('price');
+            $table->text('description');
             $table->json('metadata');
             $table->timestamps();
             $table->softDeletes();

@@ -55,25 +55,47 @@ class ProductController extends Controller
 
     /**
      * Display the specified resource.
+     *
      */
-    public function show(string $id): \Illuminate\Http\JsonResponse
+    public function show(string $uuid): \Illuminate\Http\JsonResponse
     {
-        //
+        try {
+            return $this->success('Product Fetched', $this->productService->getProduct($uuid));
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param ProductRequest $request
+     * @param string $uuid
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, string $id): \Illuminate\Http\JsonResponse
+    public function update(ProductRequest $request, string $uuid): \Illuminate\Http\JsonResponse
     {
-        //
+        try {
+            return $this->success('Product Fetched', $this->productService->updateProduct($request->validated(),$uuid));
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param string $uuid
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(string $id): \Illuminate\Http\JsonResponse
+    public function destroy(string $uuid): \Illuminate\Http\JsonResponse
     {
-        //
+        try {
+            return $this->success('Product Deleted', $this->productService->deleteProduct($uuid));
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 }

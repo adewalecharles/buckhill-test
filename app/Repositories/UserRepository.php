@@ -5,7 +5,7 @@ use App\Models\User;
 
 class UserRepository
 {
-   
+
     /**
      * get a single user using user uuid
      *
@@ -13,7 +13,7 @@ class UserRepository
      *
      * @return User
      */
-    public function getUser(string $uuid): User
+    public function getUser(string $uuid): ?User
     {
         return User::where('uuid', $uuid)->first();
     }
@@ -25,7 +25,7 @@ class UserRepository
      *
      * @return User
      */
-    public function getUserByEmail(string $email):User
+    public function getUserByEmail(string $email):?User
     {
         return User::where('email', $email)->first();
     }
@@ -53,7 +53,7 @@ class UserRepository
      *
      * @return User
      */
-    public function createUser(array $valid):User
+    public function createUser(array $valid): ?User
     {
         return User::create($valid);
     }
@@ -66,7 +66,7 @@ class UserRepository
      *
      * @return User
      */
-    public function updateUser(array $valid, User $user): User
+    public function updateUser(array $valid, User $user): ?User
     {
          $user->update($valid);
 

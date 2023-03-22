@@ -13,7 +13,7 @@ class FileRepository
      *
      * @return \App\Models\File
      */
-    public function getFile(string $uuid): \App\Models\File
+    public function getFile(string $uuid): ?\App\Models\File
     {
         return File::where('uuid', $uuid)->first();
     }
@@ -24,7 +24,7 @@ class FileRepository
      * @param array $valid
      * @return \App\Models\File
      */
-    public function uploadFile(array $valid): \App\Models\File
+    public function uploadFile(array $valid): ?\App\Models\File
     {
         return File::create([
             'name' => $valid['file']->getClientOriginalName(),
