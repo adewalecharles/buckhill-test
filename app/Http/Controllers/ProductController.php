@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
@@ -29,15 +30,27 @@ class ProductController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-
+        try {
+            return $this->success('All Products',$this->productService->getAllProducts());
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param ProductRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(ProductRequest $request): \Illuminate\Http\JsonResponse
     {
-        //
+        try {
+            return $this->success('Product Created', $this->productService->createProduct($request->validated()));
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
 
     /**

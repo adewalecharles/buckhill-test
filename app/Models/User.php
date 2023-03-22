@@ -115,7 +115,7 @@ class User extends Authenticatable
         return $this->attributes['password'] = Hash::make($value);
     }
 
-    public function scopeSortBy($query, $sortBy, $desc)
+    public function scopeSortBy($query, $sortBy, $desc):mixed
     {
         $sortFields = [
             'id',
@@ -134,13 +134,13 @@ class User extends Authenticatable
         return $query->orderBy($sortBy, $desc ? 'desc' : 'asc');
     }
 
-    public function scopeLimitBy($query, $limit)
+    public function scopeLimitBy($query, $limit):mixed
     {
         $limit = $limit ?: 50;
         return $query->limit(intval($limit));
     }
 
-    public function scopeSearch($query, $searchQuery)
+    public function scopeSearch($query, $searchQuery):mixed
     {
         if (!$searchQuery) {
             return $query;
@@ -155,7 +155,18 @@ class User extends Authenticatable
         });
     }
 
-    public static function searchAndSort($searchQuery, $sortBy, $desc, $limit, $perPage)
+    /**
+     * Search and sort the user record
+     *
+     * @param string $searchQuery
+     * @param string $sortBy
+     * @param string $desc
+     * @param string $limit
+     * @param string $perPage
+     *
+     * @return mixed
+     */
+    public static function searchAndSort($searchQuery, $sortBy, $desc, $limit, $perPage):mixed
     {
         return static::search($searchQuery)
             ->where('is_admin', false)

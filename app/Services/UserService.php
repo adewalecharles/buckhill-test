@@ -21,9 +21,9 @@ class UserService
     /**
      * Get all users
      *
-     * @return array
+     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function getAllUsers():array
+    public function getAllUsers():\Illuminate\Http\Resources\Json\JsonResource
     {
         return UserResource::collection($this->userRepository->getAllUsers())->response()->getData(true);
 

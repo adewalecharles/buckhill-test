@@ -53,4 +53,63 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_uuid', 'uuid');
     }
+
+    public function scopeSortBy($query, $sortBy, $desc):mixed
+    {
+        $sortFields = [
+            'id',
+            'title',
+            'price',
+            'created_at',
+        ];
+
+        if (!in_array($sortBy, $sortFields)) {
+            $sortBy = 'created_at';
+        }
+
+        return $query->orderBy($sortBy, $desc ? 'desc' : 'asc');
+    }
+
+    public function scopeLimitBy($query, $limit)
+    {
+        $limit = $limit ?: 50;
+        return $query->limit(intval($limit));
+    }
+
+    public function scopeSearch($query, $searchQuery):mixed
+    {
+        if (!$searchQuery) {
+            return $query;
+        }
+
+        return $query->where(function ($query) use ($searchQuery) {
+            $query->where('first_name', 'like', "%$searchQuery%")
+            ->orWhere('last_name', 'like', "%$searchQuery%")
+            ->orWhere('email', 'like', "%$searchQuery%")
+            ->orWhere('phone_number', 'like', "%$searchQuery%")
+            ->orWhere('address', 'like', "%$searchQuery%")
+            ->orWhereHas('category', function($query) use ($searchQuery) {
+                $query->where('title', 'like', "%$searchQuery%");
+            });
+        });
+    }
+
+    /**
+     * Search and sort the product record
+     *
+     * @param string $searchQuery
+     * @param string $sortBy
+     * @param string $desc
+     * @param string $limit
+     * @param string $perPage
+     * 
+     * @return mixed
+     */
+    public static function searchAndSort($searchQuery, $sortBy, $desc, $limit, $perPage):mixed
+    {
+        return static::search($searchQuery)
+            ->sortBy($sortBy, $desc)
+            ->limitBy($limit)
+            ->paginate($perPage);
+    }
 }
