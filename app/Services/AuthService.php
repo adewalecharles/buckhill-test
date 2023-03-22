@@ -36,11 +36,11 @@ class AuthService
     /**
      * Method to register users
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return array
      *
      * @throws \Exception
      */
-    public function registerUser(array $valid)
+    public function registerUser(array $valid):array
     {
         $valid['last_login_at'] = now();
         $valid['is_admin'] = true;
@@ -71,15 +71,15 @@ class AuthService
     /**
      * Login users
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return array
      *
      * @throws \Exception
      */
-    public function loginUser(array $valid)
+    public function loginUser(array $valid):array
     {
         $user = $this->userRepository->getUserByEmail($valid['email']);
 
-        if (! $user->is_admin) {
+        if (!$user->is_admin) {
             throw new InvalidUserException('You do not have the permission to access this resource', 403);
         }
         //check password

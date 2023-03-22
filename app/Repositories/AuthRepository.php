@@ -25,7 +25,8 @@ class AuthRepository
                 'last_used_at' => now(),
                 'expires_at' => $jwt->claims()->get('exp'),
                 'refreshed_at' => null,
-            ]);
+            ]
+        );
     }
 
     /**

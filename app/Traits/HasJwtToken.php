@@ -79,14 +79,12 @@ trait HasJwtToken
             InMemory::File(base_path('/private.key.pub'))
         );
 
-        $now = new DateTimeImmutable();
-
         $builder = $config->builder(new UnixTimestampDates())
             ->issuedBy(request()->getHttpHost())
             // Configures the id (jti claim)
             ->identifiedBy((string) $this->uuid)
             // Configures the time that the token was issue (iat claim)
-            ->issuedAt($now);
+            ->issuedAt(new DateTimeImmutable());
 
         if ($this->expiresAt) {
             $builder = $builder->expiresAt($this->expiresAt);
@@ -154,13 +152,8 @@ trait HasJwtToken
     {
         $parser = new Parser(new JoseEncoder());
 
-        $token = $parser->parse($token);
+        return $parser->parse($token);
 
         return $token;
-    }
-
-    public function jwtToken(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(JwtToken::class);
     }
 }

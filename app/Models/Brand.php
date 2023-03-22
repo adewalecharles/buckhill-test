@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Database\Factories\BrandFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Brand limitBy($limit)
  * @method static \Illuminate\Database\Eloquent\Builder|Brand newModelQuery()
@@ -30,7 +29,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Brand whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Brand whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Brand whereUuid($value)
- *
  * @mixin \Eloquent
  */
 class Brand extends Model

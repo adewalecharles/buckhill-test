@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Category|null $category
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product onlyTrashed()
@@ -37,14 +36,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Product withoutTrashed()
- *
  * @property string $description
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Product limitBy($limit)
  * @method static \Illuminate\Database\Eloquent\Builder|Product search($searchQuery)
  * @method static \Illuminate\Database\Eloquent\Builder|Product sortBy($sortBy, $desc)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
- *
  * @mixin \Eloquent
  */
 class Product extends Model
@@ -93,13 +89,13 @@ class Product extends Model
 
         return $query->where(function ($query) use ($searchQuery) {
             $query->where('first_name', 'like', "%$searchQuery%")
-            ->orWhere('last_name', 'like', "%$searchQuery%")
-            ->orWhere('email', 'like', "%$searchQuery%")
-            ->orWhere('phone_number', 'like', "%$searchQuery%")
-            ->orWhere('address', 'like', "%$searchQuery%")
-            ->orWhereHas('category', function ($query) use ($searchQuery) {
-                $query->where('title', 'like', "%$searchQuery%");
-            });
+                ->orWhere('last_name', 'like', "%$searchQuery%")
+                ->orWhere('email', 'like', "%$searchQuery%")
+                ->orWhere('phone_number', 'like', "%$searchQuery%")
+                ->orWhere('address', 'like', "%$searchQuery%")
+                ->orWhereHas('category', function ($query) use ($searchQuery) {
+                    $query->where('title', 'like', "%$searchQuery%");
+                });
         });
     }
 
@@ -110,7 +106,7 @@ class Product extends Model
      * @param  string  $sortBy
      * @param  string  $desc
      * @param  string  $limit
-     * @param  string  $perPage
+     * @param  int  $perPage
      */
     public static function searchAndSort($searchQuery, $sortBy, $desc, $limit, $perPage): mixed
     {

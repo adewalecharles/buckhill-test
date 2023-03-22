@@ -28,6 +28,13 @@ class IsAdmin
         // get the user
         $user = User::where('uuid', $parsedToken->claims()->get('user_uuid'))->first();
 
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid Bearer Token',
+            ], 400);
+        }
+
         //check if user is admin
         if ($user->is_admin) {
             return $next($request);
@@ -37,6 +44,6 @@ class IsAdmin
         return response()->json([
             'status' => false,
             'message' => 'You are not permitted to access to use this resource',
-        ], 400);
+        ], 403);
     }
 }

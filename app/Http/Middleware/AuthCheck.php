@@ -20,22 +20,16 @@ class AuthCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //get the bearer token
-        $token = $request->bearerToken();
-
         // check if token is passed or not
-        if (! $token) {
+        if (! ($token = $request->bearerToken())) {
             return response()->json([
                 'status' => false,
                 'message' => 'Bearer token is required',
             ], 401);
         }
 
-        // get user from token
-        $user = $this->decodeToken($token);
-
         // check if user is found
-        if (! $user) {
+        if (! ($user = $this->decodeToken($token))) {
             return response()->json([
                 'status' => false,
                 'message' => 'Unauthenticated',

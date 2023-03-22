@@ -33,6 +33,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Brand whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Brand whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Brand whereUuid($value)
+ * @mixin \Eloquent
  */
 	class Brand extends \Eloquent {}
 }
@@ -57,6 +58,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUuid($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
+ * @property-read int|null $products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
+ * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
  */
 	class Category extends \Eloquent {}
 }
@@ -84,6 +92,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|File whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereUuid($value)
+ * @mixin \Eloquent
  */
 	class File extends \Eloquent {}
 }
@@ -96,7 +105,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken query()
- * @mixin \Eloquent
  * @property int $id
  * @property int $user_id
  * @property string $unique_id
@@ -119,8 +127,48 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken whereUniqueId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken whereUserId($value)
+ * @mixin \Eloquent
  */
 	class JwtToken extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Product
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property string $category_uuid
+ * @property string $title
+ * @property float $price
+ * @property array $metadata
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Category|null $category
+ * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereCategoryUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereMetadata($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product withoutTrashed()
+ * @property string $description
+ * @method static \Illuminate\Database\Eloquent\Builder|Product limitBy($limit)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product search($searchQuery)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product sortBy($sortBy, $desc)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
+ * @mixin \Eloquent
+ */
+	class Product extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -154,7 +202,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUuid($value)
- * @mixin \Eloquent
  * @property string $first_name
  * @property string $last_name
  * @property bool $is_admin
@@ -175,6 +222,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoginAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneNumber($value)
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @mixin \Eloquent
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  */
 	class User extends \Eloquent {}
 }
