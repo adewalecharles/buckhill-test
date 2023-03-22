@@ -29,8 +29,8 @@ Route::group(['prefix' => 'admin'], function() {
         Route::get('logout', [AuthController::class, 'logout']);
 
         Route::get('user-listing', [UserController::class, 'index']);
-        Route::put('user-edit/{uuid}',[UserController::class, 'edit']);
-        Route::delete('user-delete/{uuid}',[UserController::class, 'delete']);
+        Route::put('user-edit/{uuid}',[UserController::class, 'update']);
+        Route::delete('user-delete/{uuid}',[UserController::class, 'destroy']);
     });
 
 });
