@@ -2,10 +2,14 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "buckhill/exchange": "^1.0",
         "darkaonline/l5-swagger": "^8.5",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.0",
@@ -50,6 +54,18 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "setup": [
+            "cp .env.example .env",
+            "composer install",
+            "docker-compose up -d",
+            "docker exec -it buckhill-test-buckhill_app_sem_dev bash"
+        ],
+        "build": [
+            "php artisan key:generate --force",
+            "php artisan migrate --force",
+            "php artisan db:seed",
+            "php artisan test"
         ]
     },
     "extra": {

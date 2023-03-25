@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "292b4c15a23497cef03e459f95fe9452",
+    "content-hash": "65fce8c766836468ecd6db19eb1bc1c3",
     "packages": [
         {
             "name": "brick/math",
@@ -61,6 +61,56 @@
                 }
             ],
             "time": "2022-08-10T22:54:19+00:00"
+        },
+        {
+            "name": "buckhill/exchange",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adewalecharles/buckhill-exchange.git",
+                "reference": "7c2a74076150e6028f97f727e5490bef621b5d2a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adewalecharles/buckhill-exchange/zipball/7c2a74076150e6028f97f727e5490bef621b5d2a",
+                "reference": "7c2a74076150e6028f97f727e5490bef621b5d2a",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Buckhill\\Exchange\\Providers\\ExchangeProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Buckhill\\Exchange\\": "src/",
+                    "Buckhill\\Exchange\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ogundiran Adewale Charles",
+                    "email": "shyprince1@gmail.com"
+                }
+            ],
+            "description": "A simple package that helps you converts your money into any currency",
+            "keywords": [
+                "buckhill",
+                "currency",
+                "exchange"
+            ],
+            "support": {
+                "issues": "https://github.com/adewalecharles/buckhill-exchange/issues",
+                "source": "https://github.com/adewalecharles/buckhill-exchange/tree/1.0.0"
+            },
+            "time": "2023-03-25T01:41:06+00:00"
         },
         {
             "name": "darkaonline/l5-swagger",
