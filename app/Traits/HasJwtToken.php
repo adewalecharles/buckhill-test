@@ -75,8 +75,8 @@ trait HasJwtToken
     {
         $config = Configuration::forAsymmetricSigner(
             new Sha256(),
-            InMemory::File(base_path('/private.key')),
-            InMemory::File(base_path('/private.key.pub'))
+            InMemory::File(storage_path('/credentials/private.key')),
+            InMemory::File(storage_path('/credentials/private.key.pub'))
         );
 
         $builder = $config->builder(new UnixTimestampDates())
@@ -115,7 +115,7 @@ trait HasJwtToken
 
         $validator = new Validator();
 
-        $signingKey = InMemory::File(base_path('/private.key'));
+        $signingKey = InMemory::File(storage_path('/credentials/private.key'));
 
         // check if the token belongs to the user
         if (! $validator->validate($token, new HasClaimWithValue('user_uuid', $user->uuid))) {
