@@ -1,0 +1,6 @@
+192.168.16.1 - - [26/Mar/2023:19:35:33 +0000] "GET /api/documentation HTTP/1.1" 200 465 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Safari/605.1.15"
+192.168.16.1 - - [26/Mar/2023:19:35:35 +0000] "GET /api/documentation HTTP/1.1" 200 465 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Safari/605.1.15"
+192.168.16.1 - - [26/Mar/2023:19:35:54 +0000] "GET /api/documentation HTTP/1.1" 200 2111 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Safari/605.1.15"
+192.168.16.1 - - [26/Mar/2023:19:35:54 +0000] "GET /docs/api-docs.json HTTP/1.1" 200 34278 "http://localhost:7060/api/documentation" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Safari/605.1.15"
+172.23.0.1 - - [26/Mar/2023:22:32:52 +0000] "GET / HTTP/1.1" 200 27531 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36"
+172.23.0.1 - - [26/Mar/2023:22:32:54 +0000] "GET /favicon.ico HTTP/1.1" 200 0 "http://localhost:7060/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36"

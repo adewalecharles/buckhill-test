@@ -56,10 +56,9 @@
             "@php artisan key:generate --ansi"
         ],
         "setup": [
-            "cp .env.example .env",
             "composer install",
             "docker-compose up -d",
-            "docker exec -it buckhill-test-buckhill_app_sem_dev bash"
+            "docker exec -it app bash"
         ],
         "build": [
             "php artisan key:generate --force",

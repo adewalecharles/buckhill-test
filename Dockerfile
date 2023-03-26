@@ -1,60 +1,52 @@
-FROM Ubuntu:22.04
+FROM php:8.2-fpm
+
+# Copy composer.lock and composer.json
+COPY composer.lock composer.json /var/www/
 
 # Set working directory
 WORKDIR /var/www
 
-ENV TZ=UTC
-
-# Arguments defined in docker-compose.yml
-ARG user
-ARG uid
-
-# Install system dependencies
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    nano \
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    libzip-dev \
+    unzip \
     git \
     curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip
+    libonig-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Installing cron package
-RUN apt-get update && apt-get install -y cron
+# Install extensions
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd
 
-# Add crontab file in the cron directory
-#ADD docker-compose/cron/crontab /etc/cron.d/cron
-#
-#RUN chmod 0644 /etc/cron.d/cron
-#
-#RUN touch /var/log/cron.log
-#
-#RUN service cron restart
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Add files
-USER root
+# Copy existing application directory contents to the working directory
+COPY . /var/www
 
-#ADD docker-compose/cron/run.sh /run.sh
-#ADD docker-compose/cron/entrypoint.sh /entrypoint.sh
-#
-#RUN chmod +x /run.sh /entrypoint.sh
-#
-#ENTRYPOINT /entrypoint.sh
+# Assign permissions of the working directory to the www-data user
+RUN chown -R www-data:www-data \
+    /var/www/storage \
+    /var/www/bootstrap/cache
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Assign writing permissions to logs and framework directories
+RUN chmod 775 storage/logs \
+    /var/www/storage/framework/sessions \
+    /var/www/storage/framework/views \
+    /var/www/storage/credentials
 
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
-
-USER $user
-
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]
