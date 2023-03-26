@@ -14,3 +14,8 @@ The following tools are required in order to start the installation.
 2. In your terminal `cd ./buckhill-test`
 3. Run `composer setup` to setup the application and move into docker container
 4. Run `composer build` to build the application
+
+## Note
+Demo admin login credentials is
+Email: admin@buckhill.co.uk
+password: admin
