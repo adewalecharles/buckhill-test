@@ -3,18 +3,13 @@
 namespace App\Services;
 
 use App\Http\Resources\FileResource;
-use App\Repositories\FileRepository;
+use App\Interfaces\FileRepositoryInterface;
+use App\Interfaces\FileServiceInterface;
 
-class FileService
+class FileService implements FileServiceInterface
 {
-    /**
-     * @var FileRepository
-     */
-    protected $fileRepository;
-
-    public function __construct(FileRepository $fileRepository)
+    public function __construct(private FileRepositoryInterface $fileRepository)
     {
-        $this->fileRepository = $fileRepository;
     }
 
     /**

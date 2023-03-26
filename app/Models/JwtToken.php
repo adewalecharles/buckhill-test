@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\JwtToken
  *
  * @property-read \App\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken query()
+ *
  * @property int $id
  * @property int $user_id
  * @property string $unique_id
@@ -23,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $refreshed_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken whereExpiresAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken whereId($value)
@@ -34,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken whereUniqueId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|JwtToken whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class JwtToken extends Model

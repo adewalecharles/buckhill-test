@@ -2,14 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\FileRepositoryInterface;
 use App\Models\File;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class FileRepository
+class FileRepository implements FileRepositoryInterface
 {
     /**
      * Get a single file using uuid
-     *
      *
      * @return \App\Models\File
      */
@@ -26,6 +26,7 @@ class FileRepository
 
     /**
      * upload a file and create a file record
+     *
      *
      * @return \App\Models\File
      */

@@ -6,8 +6,6 @@ trait Response
 {
     /**
      * @param  mixed  $data
-     * @param string $message
-     * @param int $status
      */
     public function success(string $message, $data = [], int $status = 200): \Illuminate\Http\JsonResponse
     {
@@ -20,8 +18,6 @@ trait Response
 
     /**
      * @param  mixed  $data
-     * @param string $message
-     * @param int $status
      */
     public function error(string $message, $data = [], int $status = 400): \Illuminate\Http\JsonResponse
     {

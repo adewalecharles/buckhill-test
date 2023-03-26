@@ -2,11 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\AuthRepositoryInterface;
 use App\Models\JwtToken;
 use App\Models\User;
 use Lcobucci\JWT\Token\Plain;
 
-class AuthRepository
+class AuthRepository implements AuthRepositoryInterface
 {
     /**
      * Create a record of JWT token for the given user

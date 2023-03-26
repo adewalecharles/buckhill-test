@@ -3,21 +3,16 @@
 namespace App\Services;
 
 use App\Http\Resources\ProductResource;
-use App\Repositories\ProductRepository;
+use App\Interfaces\ProductRepositoryInterface;
+use App\Interfaces\ProductServiceInterface;
 
-class ProductService
+class ProductService implements ProductServiceInterface
 {
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
     /**
      * This class construct
      */
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(private ProductRepositoryInterface $productRepository)
     {
-        $this->productRepository = $productRepository;
     }
 
     /**
@@ -55,8 +50,6 @@ class ProductService
 
     /**
      * Get a single product using uuid
-     *
-     *
      *
      * @throws \Exception
      */

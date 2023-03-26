@@ -2,19 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\BrandService;
+use App\Interfaces\BrandServiceInterface;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-    /**
-     * @var BrandService
-     */
-    protected $brandService;
-
-    public function __construct(BrandService $brandService)
+    public function __construct(private BrandServiceInterface $brandService)
     {
-        $this->brandService = $brandService;
     }
 
     /**

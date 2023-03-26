@@ -3,19 +3,13 @@
 namespace App\Services;
 
 use App\Http\Resources\UserResource;
-use App\Models\User;
-use App\Repositories\UserRepository;
+use App\Interfaces\UserRepositoryInterface;
+use App\Interfaces\UserServiceInterface;
 
-class UserService
+class UserService implements UserServiceInterface
 {
-    /**
-     * @var UserRepository
-     */
-    protected $userRepository;
-
-    public function __construct(UserRepository $userRepository)
+    public function __construct(private UserRepositoryInterface $userRepository)
     {
-        $this->userRepository = $userRepository;
     }
 
     /**

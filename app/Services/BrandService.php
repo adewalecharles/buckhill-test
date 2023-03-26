@@ -3,18 +3,13 @@
 namespace App\Services;
 
 use App\Http\Resources\BrandResource;
-use App\Repositories\BrandRepository;
+use App\Interfaces\BrandRepositoryInterface;
+use App\Interfaces\BrandServiceInterface;
 
-class BrandService
+class BrandService implements BrandServiceInterface
 {
-    /**
-     * @var BrandRepository
-     */
-    protected $brandRepository;
-
-    public function __construct(BrandRepository $brandRepository)
+    public function __construct(private BrandRepositoryInterface $brandRepository)
     {
-        $this->brandRepository = $brandRepository;
     }
 
     /**

@@ -3,22 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
-use App\Services\ProductService;
+use App\Interfaces\ProductServiceInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductController extends Controller
 {
     /**
-     * @var ProductService
-     */
-    protected $productService;
-
-    /**
      * This controller construct
      */
-    public function __construct(ProductService $productService)
+    public function __construct(private ProductServiceInterface $productService)
     {
-        $this->productService = $productService;
     }
 
     /**

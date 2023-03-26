@@ -2,20 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CategoryService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Interfaces\CategoryServiceInterface;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * @var CategoryService
-     */
-    protected $categoryService;
-
-    public function __construct(CategoryService $categoryService)
+    public function __construct(private CategoryServiceInterface $categoryService)
     {
-        $this->categoryService = $categoryService;
     }
 
     /**
@@ -46,8 +39,6 @@ class CategoryController extends Controller
     {
         try {
             return $this->success('All Categories', $this->categoryService->getAllCategories());
-        } catch (ModelNotFoundException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), [], $e->getCode());
         }

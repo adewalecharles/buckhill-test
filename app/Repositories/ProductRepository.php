@@ -2,10 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\ProductRepositoryInterface;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ProductRepository
+class ProductRepository implements ProductRepositoryInterface
 {
     /**
      * Get all products, all params to search and sort and pulled directly from the request helper method

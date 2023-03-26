@@ -3,20 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UploadFileRequest;
-use App\Services\FileService;
+use App\Interfaces\FileServiceInterface;
 use DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FileController extends Controller
 {
-    /**
-     * @var FileService
-     */
-    protected $fileService;
-
-    public function __construct(FileService $fileService)
+    public function __construct(private FileServiceInterface $fileService)
     {
-        $this->fileService = $fileService;
     }
 
     /**
@@ -66,8 +59,6 @@ class FileController extends Controller
             DB::commit();
 
             return $this->success('File Uploaded', $response);
-        } catch (ModelNotFoundException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), [], $e->getCode());
         }
@@ -107,8 +98,6 @@ class FileController extends Controller
     {
         try {
             return $this->success('File fetched successfully', $this->fileService->getFile($uuid));
-        } catch (ModelNotFoundException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), [], $e->getCode());
         }

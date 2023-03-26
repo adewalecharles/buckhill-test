@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Models\JwtToken;
 use App\Models\User;
 use DateTimeImmutable;
 use Lcobucci\JWT\Configuration;

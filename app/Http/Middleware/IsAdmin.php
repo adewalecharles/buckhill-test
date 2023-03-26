@@ -28,7 +28,7 @@ class IsAdmin
         // get the user
         $user = User::where('uuid', $parsedToken->claims()->get('user_uuid'))->first();
 
-        if (!$user) {
+        if (! $user) {
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid Bearer Token',

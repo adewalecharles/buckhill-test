@@ -2,26 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\InvalidUserException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Services\AuthService;
+use App\Interfaces\AuthServiceInterface;
 use DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AuthController extends Controller
 {
     /**
-     * @var AuthService
-     */
-    protected $authService;
-
-    /**
      * Auth controller construct
      */
-    public function __construct(AuthService $authService)
+    public function __construct(private AuthServiceInterface $authService)
     {
-        $this->authService = $authService;
     }
 
     /**
@@ -66,8 +58,6 @@ class AuthController extends Controller
             DB::commit();
 
             return $this->success('User created successfully', $response, 200);
-        } catch (ModelNotFoundException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), [], $e->getCode());
         }
@@ -106,10 +96,6 @@ class AuthController extends Controller
     {
         try {
             return $this->success('User logged in successfully', $this->authService->loginUser($request->validated()));
-        } catch(ModelNotFoundException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
-        } catch(InvalidUserException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), [], $e->getCode());
         }
@@ -146,10 +132,6 @@ class AuthController extends Controller
     {
         try {
             return $this->success('Logout successful');
-        } catch (ModelNotFoundException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
-        } catch (InvalidUserException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), [], $e->getCode());
         }

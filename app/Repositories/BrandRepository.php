@@ -2,9 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\BrandRepositoryInterface;
 use App\Models\Brand;
 
-class BrandRepository
+class BrandRepository implements BrandRepositoryInterface
 {
     /**
      * Get all brands

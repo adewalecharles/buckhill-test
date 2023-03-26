@@ -4,43 +4,31 @@ namespace App\Services;
 
 use App\Exceptions\InvalidUserException;
 use App\Http\Resources\UserResource;
+use App\Interfaces\AuthRepositoryInterface;
+use App\Interfaces\AuthServiceInterface;
 use App\Models\User;
-use App\Repositories\AuthRepository;
 use App\Repositories\UserRepository;
 use Carbon\CarbonImmutable;
 use Hash;
 use Illuminate\Support\Facades\Auth;
 use Lcobucci\JWT\Token\Plain;
 
-class AuthService
+class AuthService implements AuthServiceInterface
 {
-    /**
-     * @var AuthRepository
-     */
-    protected $authRepository;
-
-    /**
-     * @var UserRepository
-     */
-    protected $userRepository;
-
     /**
      * Auth Service constructor
      */
-    public function __construct(AuthRepository $authRepository, UserRepository $userRepository)
+    public function __construct(private AuthRepositoryInterface $authRepository, private UserRepository $userRepository)
     {
-        $this->authRepository = $authRepository;
-        $this->userRepository = $userRepository;
     }
 
     /**
      * Method to register users
      *
-     * @return array
      *
      * @throws \Exception
      */
-    public function registerUser(array $valid):array
+    public function registerUser(array $valid): array
     {
         $valid['last_login_at'] = now();
         $valid['is_admin'] = true;
@@ -71,15 +59,14 @@ class AuthService
     /**
      * Login users
      *
-     * @return array
      *
      * @throws \Exception
      */
-    public function loginUser(array $valid):array
+    public function loginUser(array $valid): array
     {
         $user = $this->userRepository->getUserByEmail($valid['email']);
 
-        if (!$user->is_admin) {
+        if (! $user->is_admin) {
             throw new InvalidUserException('You do not have the permission to access this resource', 403);
         }
         //check password
@@ -125,7 +112,7 @@ class AuthService
     /**
      * Function to generate new JWT token
      */
-    private function generateAuthToken(User $user): Plain
+    public function generateAuthToken(User $user): Plain
     {
         return $user->setExpiresAt(CarbonImmutable::now()->addMinutes(120))
              ->setClaims([

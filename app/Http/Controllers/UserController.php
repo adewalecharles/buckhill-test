@@ -3,22 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\UpdateRequest;
-use App\Models\User;
-use App\Services\UserService;
+use App\Interfaces\UserServiceInterface;
 use DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * @var UserService
-     */
-    protected $userService;
-
-    public function __construct(UserService $userService)
+    public function __construct(private UserServiceInterface $userService)
     {
-        $this->userService = $userService;
     }
 
     /**
@@ -75,8 +67,6 @@ class UserController extends Controller
     {
         try {
             return $this->success('All users fetched', $this->userService->getAllUsers());
-        } catch (ModelNotFoundException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), [], $e->getCode());
         }
@@ -145,10 +135,6 @@ class UserController extends Controller
             DB::commit();
 
             return $this->success('User updated', $response);
-        } catch (ModelNotFoundException $e) {
-            DB::rollBack();
-
-            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -183,8 +169,6 @@ class UserController extends Controller
     {
         try {
             return $this->success('User Deleted', [], 200);
-        } catch (ModelNotFoundException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), [], $e->getCode());
         }

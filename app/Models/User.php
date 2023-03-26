@@ -29,6 +29,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -42,6 +43,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUuid($value)
+ *
  * @property string $first_name
  * @property string $last_name
  * @property bool $is_admin
@@ -51,6 +53,7 @@ use Illuminate\Notifications\Notifiable;
  * @property bool $is_marketing
  * @property \Illuminate\Support\Carbon|null $last_login_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User limitBy($limit)
  * @method static \Illuminate\Database\Eloquent\Builder|User search($searchQuery)
  * @method static \Illuminate\Database\Eloquent\Builder|User sortBy($sortBy, $desc)
@@ -62,10 +65,12 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoginAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneNumber($value)
+ *
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -111,7 +116,6 @@ class User extends Authenticatable
         'is_marketing' => 'boolean',
         'last_login_at' => 'datetime',
     ];
-
 
     public function jwtToken(): \Illuminate\Database\Eloquent\Relations\HasOne
     {

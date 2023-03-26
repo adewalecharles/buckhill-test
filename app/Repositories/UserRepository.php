@@ -2,10 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class UserRepository
+class UserRepository implements UserRepositoryInterface
 {
     /**
      * get a single user using user uuid
